@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const button = document.getElementById('myButton');
-    const text = document.getElementById('myText');
+    const inputField = document.getElementById('inputField');
+    const button = document.getElementById('submitButton');
+    const displayText = document.getElementById('displayText');
 
     button.addEventListener('click', function() {
-        text.textContent = '你點擊了按鈕！';
+        const userInput = inputField.value;
+        displayText.textContent = `你剛輸入的是：${userInput}`;
     });
 });
