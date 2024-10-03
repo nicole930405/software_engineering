@@ -7,3 +7,4 @@ document.addEventListener('DOMContentLoaded', function() {
         text.textContent = '你點擊了按鈕！';
     });
 });
+
