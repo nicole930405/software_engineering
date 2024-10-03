@@ -8,18 +8,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-// 倒數計時器功能，從 10 開始倒數，直到 0
-document.addEventListener('DOMContentLoaded', function() {
-    const countdownElement = document.getElementById('countdown');
-    let countdownValue = 10;
 
-    const countdownTimer = setInterval(function() {
-        if (countdownValue > 0) {
-            countdownElement.textContent = countdownValue;
-            countdownValue--;
-        } else {
-            countdownElement.textContent = '倒數結束！';
-            clearInterval(countdownTimer);
-        }
-    }, 1000); // 每秒更新一次
-});
