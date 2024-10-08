@@ -1,0 +1,32 @@
+body {
+  margin: 0; /*移除預設的外邊距*/
+}
+/*不會變的*/
+.background{
+  background-color: #fffffe;
+}
+
+.top_bar{
+  position: fixed; /*固定在視窗內*/
+  top: 0;
+  left: 0;
+  right: 0; /*距離最右邊 0*/
+  background-color: #fffffe;
+  z-index: 1000; /*確保再最上面*/
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /*下方有陰影*/
+  height: 35px;
+  padding: 10px;
+}
+
+.food_panda_color {
+  color: #d92d70;
+  font-size: 20px; /*字體大小*/
+  font-weight: bold;
+  text-align: center;
+}
+
+@media (min-width: 768px) { /*全螢幕模式時foodpanda再左邊*/
+  .food_panda_color{
+    text-align: left;
+  }
+}
