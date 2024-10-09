@@ -18,7 +18,7 @@ function App() {
       if (!IsLogIn) {
           //未登入
         setLoginModalOpen(true);
-        // console.log(LoginModalOpen);
+
       }
     }
 
