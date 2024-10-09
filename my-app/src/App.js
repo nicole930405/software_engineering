@@ -18,11 +18,11 @@ function App() {
       if (!IsLogIn) {
           //未登入
         setLoginModalOpen(true);
-
       }
     }
 
     const closeLoginModal = () => {
+        //login畫面
         setLoginModalOpen(false)
     }
   return (
