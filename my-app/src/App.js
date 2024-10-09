@@ -2,7 +2,6 @@
 import './App.css';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import LoginModal from "./LoginModal/LoginModal";
 import IconButton from '@mui/material/IconButton';
