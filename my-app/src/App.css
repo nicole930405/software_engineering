@@ -25,8 +25,86 @@ body {
   text-align: center;
 }
 
-@media (min-width: 768px) { /*全螢幕模式時foodpanda再左邊*/
-  .food_panda_color{
-    text-align: left;
-  }
+.component_container{
+  /*position: relative; !*子元素可以絕對定位*!*/
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+
+.person_icon{
+  cursor: pointer; /*滑鼠移過去會變成手指頭*/
+  position: absolute;
+  left: 0;
+}
+
+
+.shopping_car_icon{
+  position: fixed;
+  right:0;
+}
+
+.login_button_signup{ /*註冊*/
+  display: none !important;
+  position: fixed;
+  right:-200px;
+}
+
+.login_button_login{ /*登入*/
+  display: none !important;
+  position: fixed;
+  right:-400px;
+}
+
+@media (min-width: 1024px){
+  .person_icon{
+    display: none !important;
+  }
+
+  .login_button_signup{
+    display: block !important;
+  }
+
+  .login_button_login{
+    display: block !important;
+  }
+
+  .component_container {
+    justify-content: space-between; /*全螢幕時正常空間分配*/
+  }
+
+  .shopping_car_icon {
+    right: 0;
+  }
+
+}
+/*-------------------------------------------*/
+/*Login Modal*/
+.login_background{
+  position: fixed;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001;
+  overflow: auto;
+}
+
+.login_box{
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  height: 450px;
+  overflow-x: auto; /*垂直滾動條*/
+  overflow-y: auto; /*水平滾動條*/
+}
+
+.close_icon_button {
+  left: 350px;
+}
+
