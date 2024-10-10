@@ -18,7 +18,7 @@ function App() {
       if (!IsLogIn) {
           //未登入
         setLoginModalOpen(true);
-        console.log(LoginModalOpen);
+        //console.log(LoginModalOpen);
       }
     }
 
@@ -55,7 +55,7 @@ function App() {
 
           </div>
       </div>
-        <LoginModal isOpen={LoginModalOpen} onClose={closeLoginModal}/>
+        <LoginModal isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn}/>
     </div>
   );
 }
