@@ -3,9 +3,11 @@ import '../App.css';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import IconButton from '@mui/material/IconButton';
 
-function LoginModal({isOpen, onClose }) {
-    if(!isOpen) return null; //未開啟就不作動作
+function LoginModal({isOpen, onClose, origin_state }) {
+    //origin_state是原始登入狀態
+    if(!isOpen) return null; //未開啟登入頁面就不作動作
     //console.log(isOpen);
+    //console.log(origin_state);
 
     const handleBackgroundClick = (event) => {
       //點擊背景時關閉
