@@ -78,6 +78,14 @@ body {
   }
 
 }
+
+.move_text{
+  margin-top: 90px;
+  margin-left: 15px;
+  font-weight: bold;
+}
+
+
 /*-------------------------------------------*/
 /*Login Modal*/
 .login_background{
@@ -108,3 +116,10 @@ body {
   left: 350px;
 }
 
+/*-------------------------------------------*/
+/*Search Address*/
+.search_address{
+  margin-top: 40px;
+  margin-left: 15px;
+  margin-right: 15px;
+}

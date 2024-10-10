@@ -1,18 +1,23 @@
 // import logo from './logo.svg';
 import './App.css';
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import LoginModal from "./LoginModal/LoginModal";
+import SearchAddress from "./search_address/search_address";
+
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function App() {
 
     const [IsLogIn, setIsLogIn] = useState(false); //預設未登入
-    //const [IsSignUp, setIsSignUp] = useState(false); //預設未註冊
     const [LoginModalOpen, setLoginModalOpen] = useState(false);
+    const [TyrLogIn, setTyrLogIn] = useState(true); //!!!先假設登入
     //const navigate = useNavigate(); //轉跳頁便用
+
+    const [lng, setLng] = useState(null); //經度
+    const [lat, setLat] = useState(null); //緯度
 
     const handleIconClick = () => {
       if (!IsLogIn) {
@@ -26,6 +31,26 @@ function App() {
         //login畫面
         setLoginModalOpen(false)
     }
+
+    const handle_setIsLogIn = (value) => {
+        setIsLogIn(value);
+    }
+
+    const handleLngLat = (data1, data2) => {
+      setLng(data1);
+      setLat(data2);
+
+
+    }
+
+    useEffect(() => {
+        if (lng !== null && lat !== null) {
+            //console.log(`經度: ${lng}, 緯度: ${lat}`);
+        }
+    }, [lng, lat]);
+
+
+
   return (
     <div className="background">
       <div className="top_bar">
@@ -54,8 +79,14 @@ function App() {
               </IconButton>
 
           </div>
-      </div>
-        <LoginModal isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn}/>
+      </div> {/*最上面那一條*/}
+        <div className="move_text">
+            <div>從美食到生鮮雜貨 上千萬種商品</div>
+            <div>馬上點馬上到</div>
+        </div>
+        <LoginModal isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn} now_stage={handle_setIsLogIn}/>
+        <SearchAddress  getLngLat = {handleLngLat}/>
+        {/*{console.log(lng)}*/}
     </div>
   );
 }
