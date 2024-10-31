@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import '../App.css';
 import { FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -8,7 +8,14 @@ import MapboxClient from '@mapbox/mapbox-sdk/services/geocoding';
 const mapboxToken = 'pk.eyJ1Ijoibmljb2xlbGVpYW4iLCJhIjoiY20yMzZ0dHRxMDJtNTJwcHVhcXBvdnprNSJ9.RbW_OCCI94Cg9M8wOifaOQ';
 const geocodingClient = new MapboxClient({accessToken:mapboxToken});
 
-function SearchAddress({getLngLat}) {
+const city_name=[
+    {en: "Taipei", zh:"臺北市"},
+    {en: "Keelung", zh:"基隆市"},
+    {en: "New Taipei", zh:"新北市"},
+    {en: "Taoyuan", zh:"桃園市"},
+]
+
+function SearchAddress({getLngLat, getAddress}) {
     const [address, setAddress] = useState("");  // 儲存地址
     const [lng, setLng] = useState(null); //經緯度
     const [lat, setLat] = useState(null); //經緯度
@@ -62,18 +69,26 @@ function SearchAddress({getLngLat}) {
             setError("瀏覽器不支援定位");
             setIsFetching(false);
         }
+        //console.log(address);
 
     };
 
+    useEffect(() => {
+        getAddress(address);
+    }, [address])
 
 
     return (
         <div className="search_address">
             <FormControl fullWidth variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-search">輸入你欲送達的地址</InputLabel>
+                <InputLabel htmlFor="outlined-adornment-search" shrink>
+                    輸入你欲送達的地址
+                </InputLabel>
                 <OutlinedInput
                     id="outlined-adornment-search"
                     type="text"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)} // 更新 address 狀態
                     endAdornment={
                         <InputAdornment position="end">
                             <Button
@@ -95,8 +110,8 @@ function SearchAddress({getLngLat}) {
                     }
                     label="輸入你欲送達的地址"
                     placeholder="Street, Postal Code"
-                    color='black'
-                    value={address}
+                    color="black"
+                    InputLabelProps={{ shrink: true }}
                 />
             </FormControl>
 
