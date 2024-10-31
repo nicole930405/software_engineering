@@ -19,6 +19,8 @@ function App() {
     const [lng, setLng] = useState(null); //經度
     const [lat, setLat] = useState(null); //緯度
 
+    const [address, setAddress] = useState("");
+
     const handleIconClick = () => {
       if (!IsLogIn) {
           //未登入
@@ -85,8 +87,9 @@ function App() {
             <div>馬上點馬上到</div>
         </div>
         <LoginModal isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn} now_stage={handle_setIsLogIn}/>
-        <SearchAddress  getLngLat = {handleLngLat}/>
+        <SearchAddress  getLngLat = {handleLngLat} getAddress={setAddress}/>
         {/*{console.log(lng)}*/}
+        {console.log(address)}
     </div>
   );
 }
