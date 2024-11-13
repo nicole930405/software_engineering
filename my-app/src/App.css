@@ -123,3 +123,10 @@ body {
   margin-left: 15px;
   margin-right: 15px;
 }
+
+/*-------------------------------------------*/
+/*Function list*/
+.move_middle {
+  position: absolute;
+  left:40%;
+}
