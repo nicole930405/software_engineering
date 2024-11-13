@@ -3,7 +3,7 @@ import '../App.css';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import IconButton from '@mui/material/IconButton';
 
-function LoginModal({isOpen, onClose, origin_state, now_stage }) {
+function Login_Signin({isOpen, onClose, origin_state, now_stage }) {
     //origin_state是原始登入狀態,你可以用來判斷有沒有登入
     //now_stage是用來記錄操作登入界面後的現在登入狀態(如果有登入的話幫我回傳true, 沒有的話繼續回傳false)
 
@@ -36,4 +36,4 @@ function LoginModal({isOpen, onClose, origin_state, now_stage }) {
     );
 }
 
-export default LoginModal;
+export default Login_Signin;
