@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import '../App.css';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import IconButton from '@mui/material/IconButton';
@@ -7,7 +7,6 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage }) {
     //origin_state是原始登入狀態,你可以用來判斷有沒有登入
     //now_stage是用來記錄操作登入界面後的現在登入狀態(如果有登入的話幫我回傳true, 沒有的話繼續回傳false)
 
-    if(!isOpen) return null; //未開啟登入頁面就不作動作
     //console.log(isOpen);
     //console.log(origin_state);
 
@@ -23,7 +22,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage }) {
       onClose();
     }
 
-    return(
+    return isOpen ? (
         <div className="login_background" onClick={handleBackgroundClick}>
             <div className="login_box">
                 <IconButton className="close_icon_button" onClick={closeLoginBox}>
@@ -33,7 +32,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage }) {
                 <div>註冊或登入</div>
             </div>
         </div>
-    );
+    ) : null;
 }
 
 export default Login_Signin;

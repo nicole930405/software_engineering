@@ -2,7 +2,8 @@
 import './App.css';
 import React, {useEffect, useState} from "react";
 import Login_Signin from "./LoginModal/Login_Signin";
-import SearchAddress from "./search_address/search_address";
+import Enter_Address from "./search_address/Enter_Address";
+import Function_List from "./LoginModal/Function_List";
 
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
@@ -11,9 +12,9 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function App() {
 
-    const [IsLogIn, setIsLogIn] = useState(false); //預設未登入
-    const [LoginModalOpen, setLoginModalOpen] = useState(false);
-    const [TyrLogIn, setTyrLogIn] = useState(true); //!!!先假設登入
+    const [IsLogIn, setIsLogIn] = useState(true); //預設登入狀態(可自己調T、F)
+    const [LoginModalOpen, setLoginModalOpen] = useState(false); //登入頁面
+    const [FunctionList, setFunctionList] = useState(false) //以登入的使用者功能
     //const navigate = useNavigate(); //轉跳頁便用
 
     const [lng, setLng] = useState(null); //經度
@@ -26,12 +27,19 @@ function App() {
           //未登入
         setLoginModalOpen(true);
         //console.log(LoginModalOpen);
+      }else{
+          //登入
+          setFunctionList(true);
       }
     }
 
     const closeLoginModal = () => {
         //login畫面
         setLoginModalOpen(false)
+    }
+
+    const closeFunctionList=() =>{
+        setFunctionList(false)
     }
 
     const handle_setIsLogIn = (value) => {
@@ -57,28 +65,39 @@ function App() {
     <div className="background">
       <div className="top_bar">
           <div className="component_container">
-              <IconButton className="person_icon">
-                  <PersonOutlineOutlinedIcon onClick={handleIconClick}  style={{color:"black"}}/>
-              </IconButton>
+                  <IconButton className="person_icon">
+                    <PersonOutlineOutlinedIcon onClick={handleIconClick}  style={{color:"black"}}/>
+                  </IconButton>
               <div className="food_panda_color">
                   foodpanda
               </div>
-              <Button variant="outlined"
-                      sx={{
-                          borderColor:'black',
-                          color:'black'
-                      }} className="login_button_login" onClick={handleIconClick}>
-                  登入
-              </Button>
-              <Button variant="contained"
-                      sx={{
-                          backgroundColor:'#e04c7f'
-                      }} className="login_button_signup" onClick={handleIconClick}>
-                  註冊
-              </Button>
+              {!IsLogIn ? (
+                  <>
+                      <Button variant="outlined"
+                              sx={{
+                                  borderColor:'black',
+                                  color:'black'
+                              }} className="login_button_login" onClick={handleIconClick}>
+                          登入
+                      </Button>
+                      <Button variant="contained"
+                              sx={{
+                                  backgroundColor:'#e04c7f'
+                              }} className="login_button_signup" onClick={handleIconClick}>
+                          註冊
+                      </Button>
+
+                  </>
+              ):(
+                  <>
+                  </>
+              )}
+              {/*未登入時顯示登入的按鈕 登入時顯示功能表*/}
+
               <IconButton className="shopping_car_icon">
-                  <ShoppingCartOutlinedIcon style={{color:"black"}}/>
+                  <ShoppingCartOutlinedIcon style={{color:"black"}} onClick={handleIconClick}/>
               </IconButton>
+
 
           </div>
       </div> {/*最上面那一條*/}
@@ -86,10 +105,13 @@ function App() {
             <div>從美食到生鮮雜貨 上千萬種商品</div>
             <div>馬上點馬上到</div>
         </div>
+        {/*未登入*/}
         <Login_Signin isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn} now_stage={handle_setIsLogIn}/>
-        <SearchAddress  getLngLat = {handleLngLat} getAddress={setAddress}/>
+        <Enter_Address  getLngLat = {handleLngLat} getAddress={setAddress}/>
+        <Function_List isOpen = {FunctionList} onClose ={closeFunctionList} />
         {/*{console.log(lng)}*/}
-        {console.log(address)}
+        {/*{console.log(address)}*/}
+
     </div>
   );
 }
