@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
 import React, {useEffect, useState} from "react";
-import LoginModal from "./LoginModal/LoginModal";
+import Login_Signin from "./LoginModal/Login_Signin";
 import SearchAddress from "./search_address/search_address";
 
 import IconButton from '@mui/material/IconButton';
@@ -86,7 +86,7 @@ function App() {
             <div>從美食到生鮮雜貨 上千萬種商品</div>
             <div>馬上點馬上到</div>
         </div>
-        <LoginModal isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn} now_stage={handle_setIsLogIn}/>
+        <Login_Signin isOpen={LoginModalOpen} onClose={closeLoginModal} origin_state={IsLogIn} now_stage={handle_setIsLogIn}/>
         <SearchAddress  getLngLat = {handleLngLat} getAddress={setAddress}/>
         {/*{console.log(lng)}*/}
         {console.log(address)}
