@@ -9,6 +9,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 function App() {
 
@@ -22,7 +23,7 @@ function App() {
 
     const [address, setAddress] = useState("");
 
-    const handleIconClick = () => {
+    const handleIconClick_person = () => {
       if (!IsLogIn) {
           //未登入
         setLoginModalOpen(true);
@@ -31,6 +32,17 @@ function App() {
           //登入
           setFunctionList(true);
       }
+    }
+
+    const handleIconClick_shopping_cart = () => {
+        if (!IsLogIn) {
+            //未登入
+            setLoginModalOpen(true);
+            //console.log(LoginModalOpen);
+        }else{
+            //登入
+
+        }
     }
 
     const closeLoginModal = () => {
@@ -66,7 +78,7 @@ function App() {
       <div className="top_bar">
           <div className="component_container">
                   <IconButton className="person_icon">
-                    <PersonOutlineOutlinedIcon onClick={handleIconClick}  style={{color:"black"}}/>
+                    <PersonOutlineOutlinedIcon onClick={handleIconClick_person}  style={{color:"black"}}/>
                   </IconButton>
               <div className="food_panda_color">
                   foodpanda
@@ -77,25 +89,42 @@ function App() {
                               sx={{
                                   borderColor:'black',
                                   color:'black'
-                              }} className="login_button_login" onClick={handleIconClick}>
+                              }} className="login_button_login" onClick={handleIconClick_person}>
                           登入
                       </Button>
                       <Button variant="contained"
                               sx={{
                                   backgroundColor:'#e04c7f'
-                              }} className="login_button_signup" onClick={handleIconClick}>
+                              }} className="login_button_signup" onClick={handleIconClick_person}>
                           註冊
                       </Button>
 
                   </>
               ):(
                   <>
+                      <Button variant="contained"
+                              sx={{
+                                  backgroundColor:'white',
+                                  color:'black',
+                                  boxShadow:'none',
+                                  '&:hover':{
+                                      boxShadow:'none'
+                                  }
+                              }}
+                              className="personal_icon"
+                              startIcon={<PersonOutlineOutlinedIcon/>}
+                              endIcon={<KeyboardArrowDownIcon
+                                  sx={{color:'#e04c7f'}}/>}
+                              onClick={handleIconClick_person}
+                      >
+                          user
+                      </Button>
                   </>
               )}
               {/*未登入時顯示登入的按鈕 登入時顯示功能表*/}
 
               <IconButton className="shopping_car_icon">
-                  <ShoppingCartOutlinedIcon style={{color:"black"}} onClick={handleIconClick}/>
+                  <ShoppingCartOutlinedIcon style={{color:"black"}} onClick={handleIconClick_shopping_cart}/>
               </IconButton>
 
 

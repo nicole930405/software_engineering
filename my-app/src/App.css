@@ -56,6 +56,13 @@ body {
   right:-400px;
 }
 
+.personal_icon{
+  display: flex !important;
+  position: fixed;
+  right:-400px;
+  cursor: pointer;
+}
+
 @media (min-width: 1024px){
   .person_icon{
     display: none !important;
@@ -63,6 +70,10 @@ body {
 
   .login_button_signup{
     display: block !important;
+  }
+
+  .personal_icon{
+    display: flex !important;
   }
 
   .login_button_login{
