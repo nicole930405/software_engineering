@@ -22,14 +22,34 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage }) {
       onClose();
     }
 
+    const handleLoginClick = () => {
+        // 處理登入按鈕點擊事件
+        console.log("登入按鈕被點擊");
+        now_stage(true); // 假設點擊後設定已登入
+        onClose(); // 關閉視窗
+    };
+
+    const handleSignupClick = () => {
+        // 處理註冊按鈕點擊事件
+        console.log("註冊按鈕被點擊");
+    };
+
     return isOpen ? (
         <div className="login_background" onClick={handleBackgroundClick}>
             <div className="login_box">
                 <IconButton className="close_icon_button" onClick={closeLoginBox}>
-                    <HighlightOffOutlinedIcon/>
+                    <HighlightOffOutlinedIcon />
                 </IconButton>
                 <h2>歡迎!</h2>
                 <div>註冊或登入</div>
+                <div className="button_group">
+                    <button className="login_button" onClick={handleLoginClick}>
+                        登入
+                    </button>
+                    <button className="signup_button" onClick={handleSignupClick}>
+                        註冊
+                    </button>
+                </div>
             </div>
         </div>
     ) : null;
