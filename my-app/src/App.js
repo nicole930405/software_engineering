@@ -12,7 +12,7 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 function App() {
 
-    const [IsLogIn, setIsLogIn] = useState(true); //預設登入狀態(可自己調T、F)
+    const [IsLogIn, setIsLogIn] = useState(false); //預設登入狀態(可自己調T、F)
     const [LoginModalOpen, setLoginModalOpen] = useState(false); //登入頁面
     const [FunctionList, setFunctionList] = useState(false) //以登入的使用者功能
     //const navigate = useNavigate(); //轉跳頁便用
