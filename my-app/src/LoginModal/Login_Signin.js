@@ -7,7 +7,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     //origin_state是原始登入狀態,你可以用來判斷有沒有登入
     //now_stage是用來記錄操作登入界面後的現在登入狀態(如果有登入的話幫我回傳true, 沒有的話繼續回傳false)
 
-    //getUser裡面有user_id, user_name，你幫我到時候把user_id user_name計進去
+    //getUser裡面有user_id, user_name phone_number mail password address，你幫我到時候把user_id user_name計進去
 
     //console.log(isOpen);
     //console.log(origin_state);

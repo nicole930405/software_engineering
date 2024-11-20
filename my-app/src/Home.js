@@ -7,13 +7,17 @@ import Enter_Address from "./search_address/Enter_Address";
 
 
 function Home() {
+    //預設登入狀態(可自己調T、F)
+    const [IsLogIn, setIsLogIn] = useState(false);
 
-    const [IsLogIn, setIsLogIn] = useState(false); //預設登入狀態(可自己調T、F)
     const [LoginModalOpen, setLoginModalOpen] = useState(false); //登入頁面
     const [FunctionList, setFunctionList] = useState(false) //以登入的使用者功能
     const [user, setUser] = useState({
         user_id: '',
         user_name: '',
+        mail:'',
+        password:'',
+        address:''
     }); //user資料
 
     //user假設
@@ -74,8 +78,6 @@ function Home() {
     const handleLngLat = (data1, data2) => {
         setLng(data1);
         setLat(data2);
-
-
     }
 
     useEffect(() => {
