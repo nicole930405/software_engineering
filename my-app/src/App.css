@@ -199,3 +199,11 @@ body {
   position: absolute;
   left:40%;
 }
+
+/*-------------------------------------------*/
+/*Function list*/
+.modify_data_move_text{
+  margin-top: 90px;
+  margin-left: 15px;
+  font-weight: bold;
+}
