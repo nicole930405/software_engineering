@@ -1,15 +1,14 @@
 import React from "react";
 import "../App.css"
 
-const History_Order = () => {
+const Shopping_Cart = () => {
     return (
         <div className="background">
             <div className="move_text">
-                <h1>過往訂單</h1>
-                <p>這是歷史紀錄頁面。</p>
+                <h1>購物車</h1>
             </div>
         </div>
     );
 };
 
-export default History_Order;
+export default Shopping_Cart;

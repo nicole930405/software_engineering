@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import Modify_Data from "./Modify_Data/Modify_Data";
 import History_Order from "./History_Order/History_Order";
 import Top_Bar from "./Top_Bar";
+import Shopping_Cart from "./Shopping_Cart/Shopping_Cart";
 
 
 
@@ -29,6 +30,7 @@ function App() {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/modify-data" element={<Modify_Data User={user}/>}/>
                 <Route path="/history-order" element={<History_Order/>}/>
+                <Route path="/shopping-cart" element={<Shopping_Cart/>}/>
             </Routes>
         </div>
       </Router>
