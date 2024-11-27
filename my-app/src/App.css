@@ -207,3 +207,13 @@ body {
   margin-left: 15px;
   font-weight: bold;
 }
+
+/*-------------------------------------------*/
+/*Shopping cart*/
+.rounded_box {
+  width: 300px; /* 長方形寬度 */
+  height: 100px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 5px; /* 四個角圓弧 */
+  /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); !* 添加陰影以增強立體感（可選） *!*/
+}

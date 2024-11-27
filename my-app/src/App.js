@@ -8,6 +8,7 @@ import Modify_Data from "./Modify_Data/Modify_Data";
 import History_Order from "./History_Order/History_Order";
 import Top_Bar from "./Top_Bar";
 import Shopping_Cart from "./Shopping_Cart/Shopping_Cart";
+import Payment_Method from "./Shopping_Cart/Payment_Method";
 
 
 
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/modify-data" element={<Modify_Data User={user}/>}/>
                 <Route path="/history-order" element={<History_Order/>}/>
                 <Route path="/shopping-cart" element={<Shopping_Cart/>}/>
+                <Route path="/payment-method" element={<Payment_Method/>}/>
             </Routes>
         </div>
       </Router>
