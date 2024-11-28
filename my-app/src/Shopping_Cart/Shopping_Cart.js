@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";//轉跳頁面
 import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 
-const Shopping_Cart = () => {
+const Shopping_Cart = ({setTakeMethod}) => {
     const navigate = useNavigate();
     const[recordButton, setRecordButton] = useState(true);//外帶
     const [checked, setChecked] = React.useState(true);
@@ -29,6 +29,7 @@ const Shopping_Cart = () => {
             how_to_take: '外帶'
         }))
     }
+    setTakeMethod(recordChoose);
 
     const handleChange = (event) => {
         setChecked(event.target.checked);

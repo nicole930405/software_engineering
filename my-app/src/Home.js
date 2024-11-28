@@ -6,19 +6,7 @@ import axios from "axios";
 import Enter_Address from "./search_address/Enter_Address";
 
 
-function Home() {
-    //預設登入狀態(可自己調T、F)
-    const [IsLogIn, setIsLogIn] = useState(false);
-
-    const [LoginModalOpen, setLoginModalOpen] = useState(false); //登入頁面
-    const [FunctionList, setFunctionList] = useState(false) //以登入的使用者功能
-    const [user, setUser] = useState({
-        user_id: '',
-        user_name: '',
-        mail:'',
-        password:'',
-        address:''
-    }); //user資料
+function Home({setGetAddress, User}) {
 
     //user假設
     const [fake_user, setFakeUsers] = useState([]);
@@ -39,41 +27,7 @@ function Home() {
     const [lat, setLat] = useState(null); //緯度
 
     const [address, setAddress] = useState("");
-
-    const handleIconClick_person = () => {
-        if (!IsLogIn) {
-            //未登入
-            setLoginModalOpen(true);
-            //console.log(LoginModalOpen);
-        }else{
-            //登入
-            setFunctionList(true);
-        }
-    }
-
-    const handleIconClick_shopping_cart = () => {
-        if (!IsLogIn) {
-            //未登入
-            setLoginModalOpen(true);
-            //console.log(LoginModalOpen);
-        }else{
-            //登入
-
-        }
-    }
-
-    const closeLoginModal = () => {
-        //login畫面
-        setLoginModalOpen(false)
-    }
-
-    const closeFunctionList=() =>{
-        setFunctionList(false)
-    }
-
-    const handle_setIsLogIn = (value) => {
-        setIsLogIn(value);
-    }
+    setGetAddress(address);
 
     const handleLngLat = (data1, data2) => {
         setLng(data1);
@@ -95,7 +49,7 @@ function Home() {
                 <div>馬上點馬上到</div>
             </div>
             {/*未登入*/}
-            <Enter_Address  getLngLat = {handleLngLat} getAddress={setAddress}/>
+            <Enter_Address  getLngLat = {handleLngLat} getAddress={setAddress} User={User}/>
             {/*{console.log(lng)}*/}
             {/*{console.log(address)}*/}
 
