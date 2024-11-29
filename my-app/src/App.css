@@ -229,7 +229,7 @@ body {
 
 .order {
   width: 500px; /* 長方形寬度 */
-  height: 80px; /* 長方形高度 */
+  /*height: 80px; !* 長方形高度 *!*/
   background-color: #f0f0f0; /* 灰色填滿 */
   border-radius: 15px; /* 四個角圓弧 */
   margin-left: 40px;

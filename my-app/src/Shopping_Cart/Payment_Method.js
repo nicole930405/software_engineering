@@ -8,6 +8,8 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
+import Chip from '@mui/material/Chip';
+import Stack from '@mui/material/Stack';
 
 const Payment_Method = ({ getAddress, User, takeMethod }) => {
     const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
@@ -25,20 +27,22 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
             return acc;
         }, {});
     //console.log(address);
-    const fullAddress = `${address.城市}${address.區}${address.路}`;
+    const [fullAddress, setFullAddress] = useState(`${address.城市}${address.區}${address.路}`);
+    // let fullAddress = `${address.城市}${address.區}${address.路}`
     const [isClick, setIsClick] = useState(false);
     const [isModify, setIsModify] = useState(false);
-    const [orderUser, setOrderUser] = useState({
-        user_name: User.user_name,
-        phone_number: User.phone_number,
-        mail: User.mail,
-    });
 
     const [name, setName] = useState(User.user_name);
     const [phone, setPhone] = useState(User.phone_number);
     const [getNewAddress, setGetAddress] = useState(User.address);
     const [take, setTake] = useState(false); // 初始值為 false
     const [value, setValue] = useState("credit_card");
+
+    const [orderUser, setOrderUser] = useState({
+        user_name: name,
+        phone_number: phone,
+        mail: User.mail,
+    });
 
     // 初始化 `take` 狀態
     useEffect(() => {
@@ -65,6 +69,38 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
     };
 
     const handleChange = (event) => setValue(event.target.value);
+
+    const storeAddress=()=>{
+        setIsModify(false);
+        setFullAddress(getNewAddress);
+    }
+
+    const [selectedChip, setSelectedChip] = useState("$30");
+    const handleChipClick = (value) => {
+        setSelectedChip(value); // 設定當前選中的 Chip 值
+    };
+
+    const [recordOrder, setRecordOrder] = useState({
+        user_name: "",
+        phone_number: "",
+        address:"",
+        payment_method:"",
+        how_to_take:take,
+        tips:""
+    })
+
+    const correctOrder=()=>{
+        setRecordOrder({
+            user_name: name,
+            phone_number: phone,
+            address:fullAddress,
+            payment_method:value,
+            tips:selectedChip,
+            how_to_take:take
+        })
+    }
+
+    console.log(recordOrder);
 
     return (
         <div className="background">
@@ -235,6 +271,18 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                     onChange={newAddress}
                                                 />
                                             </div>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    width: "300px",
+                                                    height: "40px",
+                                                    backgroundColor: "#e04c7f",
+                                                    marginTop: "10px",
+                                                }}
+                                                onClick={storeAddress}
+                                            >
+                                                儲存
+                                            </Button>
                                         </>
                                     ) : (
                                         <>
@@ -245,8 +293,6 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                         </>
                                     )}
                                 </div>
-
-
                             </div>
                         </div>
                         <div className="order">
@@ -257,7 +303,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                         <div className="data">
                             <div style={{marginLeft: "20px"}}>
                                 <h2>
-                                個人資料
+                                    個人資料
                                     {isClick ? (
                                         <Button sx={{color: "black"}} onClick={clickCancel}>
                                             取消
@@ -363,6 +409,36 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                 <FormControlLabel control={<Checkbox/>} label="增加統一編號"/>
                             </div>
                         </div>
+                        <div className="data">
+                            <div style={{marginLeft: "20px"}}>
+                                <h2>
+                                    提供外送夥伴小費
+                                </h2>
+                                <h3 style={{
+                                    marginTop:"-10px",
+                                    color:"gray"
+                                }}>
+                                    外送夥伴可獲得全額小費
+                                </h3>
+                                <Stack direction="row" spacing={1}>
+                                    <Chip label="下次再說"
+                                          variant={selectedChip === "nextTime" ? "filled" : "outlined"}
+                                          onClick={() => handleChipClick("nextTime")} />
+                                    <Chip label="$15"
+                                          variant={selectedChip === "$15" ? "filled" : "outlined"}
+                                          onClick={() => handleChipClick("$15")} />
+                                    <Chip label="$30"
+                                          variant={selectedChip === "$30" ? "filled" : "outlined"}
+                                          onClick={() => handleChipClick("$30")} />
+                                    <Chip label="$50"
+                                          variant={selectedChip === "$50" ? "filled" : "outlined"}
+                                          onClick={() => handleChipClick("$50")} />
+                                    <Chip label="$100"
+                                          variant={selectedChip === "$100" ? "filled" : "outlined"}
+                                          onClick={() => handleChipClick("$100")}/>
+                                </Stack>
+                            </div>
+                        </div>
                         <Button
                             variant="contained"
                             sx={{
@@ -372,6 +448,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                 marginLeft: "40px",
                                 marginTop: "10px",
                             }}
+                            onClick={correctOrder}
                         >
                             訂購外帶自取訂單
                         </Button>
