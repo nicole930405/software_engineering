@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../App.css";
+import { useNavigate } from "react-router-dom";//轉跳頁面
 import PlaceIcon from "@mui/icons-material/Place";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,8 +11,10 @@ import FormControl from "@mui/material/FormControl";
 import Checkbox from "@mui/material/Checkbox";
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
+import axios from "axios";
 
-const Payment_Method = ({ getAddress, User, takeMethod }) => {
+const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
+    const navigate = useNavigate();
     const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
     const address = getAddress
         .split(",")
@@ -22,13 +25,42 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                 acc[fieldNames[index]] = "台灣";
             }
             if (fieldNames[index] === "城市" && cur === "Taoyuan") {
-                acc[fieldNames[index]] = "桃園";
+                acc[fieldNames[index]] = "桃園市";
+            }
+            if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+                acc[fieldNames[index]] = "新北市";
+            }
+            if (fieldNames[index] === "城市" && cur === "Taipei") {
+                acc[fieldNames[index]] = "台北市";
             }
             return acc;
         }, {});
-    //console.log(address);
+
+    const [userInfo, setUserInfo] = useState({
+        user_name:'',
+        address:'',
+        mail:'',
+        phone_number:'',
+        user_id:''
+    })
+    useEffect(() => {
+        axios.get(`http://localhost:8080/user/${User.user_id}`)
+            .then(response => {
+                //console.log("fetch data:", response.data);
+                setUserInfo({
+                    user_name:response.data.user_name,
+                    address: response.data.address,
+                    mail:response.data.mail,
+                    phone_number:response.data.phone_number,
+                    user_id: response.data.user_id
+                })
+            })
+            .catch(error => {
+                console.error("error fetching")
+            });
+    }, []);
+
     const [fullAddress, setFullAddress] = useState(`${address.城市}${address.區}${address.路}`);
-    // let fullAddress = `${address.城市}${address.區}${address.路}`
     const [isClick, setIsClick] = useState(false);
     const [isModify, setIsModify] = useState(false);
 
@@ -37,12 +69,6 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
     const [getNewAddress, setGetAddress] = useState(User.address);
     const [take, setTake] = useState(false); // 初始值為 false
     const [value, setValue] = useState("credit_card");
-
-    const [orderUser, setOrderUser] = useState({
-        user_name: name,
-        phone_number: phone,
-        mail: User.mail,
-    });
 
     // 初始化 `take` 狀態
     useEffect(() => {
@@ -60,8 +86,8 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
     const newAddress = (event) => setGetAddress(event.target.value);
 
     const storeData = () => {
-        setOrderUser((prevOrderUser) => ({
-            ...prevOrderUser,
+        setUserInfo((prevUserInfo) => ({
+            ...prevUserInfo,
             user_name: name,
             phone_number: phone,
         }));
@@ -80,27 +106,26 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
         setSelectedChip(value); // 設定當前選中的 Chip 值
     };
 
-    const [recordOrder, setRecordOrder] = useState({
-        user_name: "",
-        phone_number: "",
-        address:"",
-        payment_method:"",
-        how_to_take:take,
-        tips:""
-    })
-
     const correctOrder=()=>{
-        setRecordOrder({
-            user_name: name,
-            phone_number: phone,
+        porpRecordOrder({
+            order_id:'',//不知道是什麼
+            user_id:User.user_id,
+            store_id:'',//不知道是什麼
+            delivery_id:'',//不知道是什麼
+            state:'',//不知道是什麼
+            time:'',//不知道是什麼
+            payment_id:'',//不知道是什麼
+            name: name,
+            phone: phone,
             address:fullAddress,
             payment_method:value,
             tips:selectedChip,
             how_to_take:take
         })
+        navigate("/follow-order");
     }
 
-    console.log(recordOrder);
+    //console.log(recordOrder);
 
     return (
         <div className="background">
@@ -142,7 +167,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                 disabled
                                                 id="outlined-disabled"
                                                 label="電子郵件"
-                                                value={orderUser.mail}
+                                                value={userInfo.mail}
                                             />
                                         </div>
                                         <div style={{ marginTop: "10px" }}>
@@ -178,7 +203,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <div>{orderUser.user_name}</div>
+                                        <div>{userInfo.user_name}</div>
                                         <div
                                             style={{
                                                 color: "gray",
@@ -186,7 +211,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                 fontWeight: "500",
                                             }}
                                         >
-                                            {orderUser.mail}
+                                            {userInfo.mail}
                                         </div>
                                         <div
                                             style={{
@@ -195,7 +220,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                 fontWeight: "500",
                                             }}
                                         >
-                                            {orderUser.phone_number}
+                                            {userInfo.phone_number}
                                         </div>
                                     </>
                                 )}
@@ -239,6 +264,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                 marginLeft: "40px",
                                 marginTop: "10px",
                             }}
+                            onClick={correctOrder}
                         >
                             訂購外帶自取訂單
                         </Button>
@@ -321,7 +347,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                 disabled
                                                 id="outlined-disabled"
                                                 label="電子郵件"
-                                                value={orderUser.mail}
+                                                value={userInfo.mail}
                                             />
                                         </div>
                                         <div style={{marginTop: "10px"}}>
@@ -357,7 +383,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                     </>
                                 ) : (
                                     <>
-                                        <div>{orderUser.user_name}</div>
+                                        <div>{userInfo.user_name}</div>
                                         <div
                                             style={{
                                                 color: "gray",
@@ -365,7 +391,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                 fontWeight: "500",
                                             }}
                                         >
-                                            {orderUser.mail}
+                                            {userInfo.mail}
                                         </div>
                                         <div
                                             style={{
@@ -374,7 +400,7 @@ const Payment_Method = ({ getAddress, User, takeMethod }) => {
                                                 fontWeight: "500",
                                             }}
                                         >
-                                            {orderUser.phone_number}
+                                            {userInfo.phone_number}
                                         </div>
                                     </>
                                 )}

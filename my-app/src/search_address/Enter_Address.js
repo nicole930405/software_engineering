@@ -81,7 +81,13 @@ function SearchAddress({getLngLat, getAddress, User}) {
                 acc[fieldNames[index]] = "台灣";
             }
             if (fieldNames[index] === "城市" && cur === "Taoyuan") {
-                acc[fieldNames[index]] = "桃園";
+                acc[fieldNames[index]] = "桃園市";
+            }
+            if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+                acc[fieldNames[index]] = "新北市";
+            }
+            if (fieldNames[index] === "城市" && cur === "Taipei") {
+                acc[fieldNames[index]] = "台北市";
             }
             return acc;
         }, {});

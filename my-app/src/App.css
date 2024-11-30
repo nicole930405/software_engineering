@@ -262,3 +262,30 @@ body {
   margin-left: 40px;
   margin-top: 20px;
 }
+
+/*-------------------------------------------*/
+/*follow order*/
+.take_time {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+}
+
+.take_id{
+  width: 130px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #fff1b6; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 50px;
+}
+
+.how_take {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
