@@ -183,8 +183,45 @@ body {
   background-color: #f5f5f5;
   border-color: #bbb;
 }
+/* 整個 email 輸入框的容器 */
+.email_input_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* 輸入框樣式 */
+.email_input_box input {
+  width: 100%;  /* 輸入框的寬度 */
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* 確保內邊距包含在寬度內 */
+}
 
 
+
+/* 提交按鈕樣式 */
+.submit_button_box button {
+  width: 100%; /* 確保按鈕的寬度是容器的100% */
+  padding: 12px;
+  background-color: #c21760;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 滑鼠懸停效果 */
+.submit_button_box button:hover {
+  background-color: #ff2b85;
+}
 /*-------------------------------------------*/
 /*Search Address*/
 .search_address{
