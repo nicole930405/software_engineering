@@ -244,3 +244,85 @@ body {
   margin-left: 15px;
   font-weight: bold;
 }
+
+/*-------------------------------------------*/
+/*Shopping cart*/
+.rounded_box {
+  width: 300px; /* 長方形寬度 */
+  height: 100px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 5px; /* 四個角圓弧 */
+}
+
+/*-------------------------------------------*/
+/*payment method*/
+.address {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+}
+
+.order {
+  width: 500px; /* 長方形寬度 */
+  /*height: 80px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.data {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 40px;
+}
+
+.payment {
+  width: 500px; /* 長方形寬度 */
+  height: 200px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.invoice {
+  width: 500px; /* 長方形寬度 */
+  height: 50px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+/*-------------------------------------------*/
+/*follow order*/
+.take_time {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+}
+
+.take_id{
+  width: 130px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #fff1b6; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 50px;
+}
+
+.how_take {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}

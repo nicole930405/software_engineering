@@ -15,6 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
 function Top_Bar({set_User}) {
+    const navigate = useNavigate();
 
     const [IsLogIn, setIsLogIn] = useState(false); //預設登入狀態(可自己調T、F)
     const [LoginModalOpen, setLoginModalOpen] = useState(false); //登入頁面
@@ -61,7 +62,7 @@ function Top_Bar({set_User}) {
             //console.log(LoginModalOpen);
         }else{
             //登入
-
+            navigate("/shopping-cart");
         }
     }
 
@@ -79,7 +80,6 @@ function Top_Bar({set_User}) {
     }
 
 
-    const navigate = useNavigate();
     const go_Home = () => {
         navigate("/");
     }
