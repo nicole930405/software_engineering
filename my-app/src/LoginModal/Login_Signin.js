@@ -11,7 +11,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     //getUser裡面有user_id, user_name phone_number mail password address，你幫我到時候把user_id user_name計進去
 
     //console.log(isOpen);
-    //console.log(origin_state);
+    console.log(origin_state);
     // 儲存email和錯誤信息
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -23,7 +23,8 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     const [showEmailInput, setShowEmailInput] = useState(false);
     const [showPasswordInput, setShowPasswordInput] = useState(false);
 
-    //123
+    //now_stage(true); // 設置登入狀態
+
 
     const handleBackgroundClick = (event) => {
       //點擊背景時關閉
@@ -43,6 +44,11 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
         setShowEmailInput(true);
     };
 
+    const test = () => {
+        now_stage(true);
+        onClose();
+    };
+
     const handleSignupClick = () => {
         // 處理註冊按鈕點擊事件
         //now_stage(true); // 假設點擊後設定已登入
@@ -57,7 +63,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     // 檢查電子郵件是否存在於資料庫
     const checkEmailExistence = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/user/1`);
+            const response = await axios.get(`http://localhost:8080/user/byMail?mail=${email}`);
             if (response.data) {
                 // 如果email存在，顯示密碼輸入框
                 setShowPasswordInput(true);
@@ -146,6 +152,9 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
                         <button className="signup_button" onClick={handleSignupClick}>
                             註冊
                         </button>
+                    <button className="login_button" onClick={test}>
+                        測試登入
+                    </button>
                     </div>
                 )}
                 {/* 電子郵件輸入框 */}
