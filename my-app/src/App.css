@@ -99,9 +99,9 @@ body {
 
 /*-------------------------------------------*/
 /*Login Modal*/
-.login_background{
+.login_background {
   position: fixed;
-  top:0;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -113,20 +113,115 @@ body {
   overflow: auto;
 }
 
-.login_box{
+.login_box {
   background-color: white;
-  padding: 20px;
-  border-radius: 8px;
+  padding: 30px;
+  border-radius: 12px;
   width: 400px;
-  height: 450px;
-  overflow-x: auto; /*垂直滾動條*/
-  overflow-y: auto; /*水平滾動條*/
+  height: auto;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .close_icon_button {
-  left: 350px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 18px;
+  transition: color 0.3s ease;
 }
 
+.close_icon_button:hover {
+  color: #e91e63;
+}
+
+.button_group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.login_button,
+.signup_button {
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 300px;
+}
+
+.login_button {
+  background-color: #e21b70;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 10px rgb(255, 121, 188);
+}
+
+.login_button:hover {
+  background-color: #c21760;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.6);
+}
+
+.signup_button {
+  background-color: white;
+  color: #333;
+  border: 2px solid #ccc;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.signup_button:hover {
+  background-color: #f5f5f5;
+  border-color: #bbb;
+}
+/* 整個 email 輸入框的容器 */
+.email_input_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* 輸入框樣式 */
+.email_input_box input {
+  width: 100%;  /* 輸入框的寬度 */
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* 確保內邊距包含在寬度內 */
+}
+
+
+
+/* 提交按鈕樣式 */
+.submit_button_box button {
+  width: 100%; /* 確保按鈕的寬度是容器的100% */
+  padding: 12px;
+  background-color: #c21760;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+}
+
+/* 滑鼠懸停效果 */
+.submit_button_box button:hover {
+  background-color: #ff2b85;
+}
 /*-------------------------------------------*/
 /*Search Address*/
 .search_address{
@@ -140,4 +235,94 @@ body {
 .move_middle {
   position: absolute;
   left:40%;
+}
+
+/*-------------------------------------------*/
+/*Function list*/
+.modify_data_move_text{
+  margin-top: 90px;
+  margin-left: 15px;
+  font-weight: bold;
+}
+
+/*-------------------------------------------*/
+/*Shopping cart*/
+.rounded_box {
+  width: 300px; /* 長方形寬度 */
+  height: 100px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 5px; /* 四個角圓弧 */
+}
+
+/*-------------------------------------------*/
+/*payment method*/
+.address {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+}
+
+.order {
+  width: 500px; /* 長方形寬度 */
+  /*height: 80px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.data {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 40px;
+}
+
+.payment {
+  width: 500px; /* 長方形寬度 */
+  height: 200px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+.invoice {
+  width: 500px; /* 長方形寬度 */
+  height: 50px; /* 長方形高度 */
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
+}
+
+/*-------------------------------------------*/
+/*follow order*/
+.take_time {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+}
+
+.take_id{
+  width: 130px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #fff1b6; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 50px;
+}
+
+.how_take {
+  width: 500px; /* 長方形寬度 */
+  /*height: 200px; !* 長方形高度 *!*/
+  background-color: #f0f0f0; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 40px;
+  margin-top: 20px;
 }

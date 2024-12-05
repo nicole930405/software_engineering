@@ -1,5 +1,8 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import '../App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";//轉跳頁面
+
+
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -11,6 +14,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
+import { useNavigate } from 'react-router-dom';//路徑轉跳
 
 function Function_List({ isOpen , onClose}) {
 
@@ -23,10 +27,22 @@ function Function_List({ isOpen , onClose}) {
         }
     }
 
+    const navigate = useNavigate();
+
+    const handleNavigation_modify = () => {
+        navigate("/modify-data");
+        onClose();
+    }
+
+    const  handleNavigation_history =() => {
+        navigate("/history-order");
+        onClose();
+    }
+
     const DrawerList = (
         <Box sx={{ width: 250 }} role="presentation" onClick={handleBackgroundClick}>
             <List>
-                <ListItemButton>
+                <ListItemButton onClick={handleNavigation_history}>
                     <ListItemIcon>
                         <WorkHistoryIcon/>
                         <div className= "move_middle">
@@ -34,7 +50,7 @@ function Function_List({ isOpen , onClose}) {
                         </div>
                     </ListItemIcon>
                 </ListItemButton>
-                <ListItemButton>
+                <ListItemButton onClick={handleNavigation_modify}>
                     <ListItemIcon>
                         <PersonOutlineOutlinedIcon/>
                         <div className= "move_middle">

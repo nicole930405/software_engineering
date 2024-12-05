@@ -4,18 +4,12 @@ import { FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/mat
 import Button from '@mui/material/Button';
 import MyLocationTwoToneIcon from '@mui/icons-material/MyLocationTwoTone';
 import MapboxClient from '@mapbox/mapbox-sdk/services/geocoding';
+import axios from "axios";
 
 const mapboxToken = 'pk.eyJ1Ijoibmljb2xlbGVpYW4iLCJhIjoiY20yMzZ0dHRxMDJtNTJwcHVhcXBvdnprNSJ9.RbW_OCCI94Cg9M8wOifaOQ';
 const geocodingClient = new MapboxClient({accessToken:mapboxToken});
 
-const city_name=[
-    {en: "Taipei", zh:"臺北市"},
-    {en: "Keelung", zh:"基隆市"},
-    {en: "New Taipei", zh:"新北市"},
-    {en: "Taoyuan", zh:"桃園市"},
-]
-
-function SearchAddress({getLngLat, getAddress}) {
+function SearchAddress({getLngLat, getAddress, User}) {
     const [address, setAddress] = useState("");  // 儲存地址
     const [lng, setLng] = useState(null); //經緯度
     const [lat, setLat] = useState(null); //經緯度
@@ -76,6 +70,53 @@ function SearchAddress({getLngLat, getAddress}) {
     useEffect(() => {
         getAddress(address);
     }, [address])
+
+    const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
+    const get_address = address
+        .split(",")
+        .map((item) => item.trim())
+        .reduce((acc, cur, index) => {
+            acc[fieldNames[index]] = cur;
+            if (fieldNames[index] === "國家" && cur === "Taiwan") {
+                acc[fieldNames[index]] = "台灣";
+            }
+            if (fieldNames[index] === "城市" && cur === "Taoyuan") {
+                acc[fieldNames[index]] = "桃園市";
+            }
+            if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+                acc[fieldNames[index]] = "新北市";
+            }
+            if (fieldNames[index] === "城市" && cur === "Taipei") {
+                acc[fieldNames[index]] = "台北市";
+            }
+            return acc;
+        }, {});
+
+    const full_address= `${get_address.城市}${get_address.區}${get_address.路}`
+    console.log(full_address)
+    console.log(get_address);
+
+    const handleSubmit = async () =>{
+        try {
+            const response = await axios.put(`http://localhost:8080/user/${User.user_id}`,{
+                user_name: User.user_name,
+                user_id:User.user_id,
+                phone_number:User.phone_number,
+                mail:User.mail,
+                password:User.password,
+                address:full_address
+            });
+        } catch (error){
+            console.error("更新失敗：", error);
+        }
+
+    }
+
+    useEffect(() => {
+        if (full_address) {
+            handleSubmit(); // 當 full_address 改變時，執行提交
+        }
+    }, [full_address]);
 
 
     return (
