@@ -5,16 +5,16 @@ import lombok.ToString;
 import java.util.List;
 
 @Entity
-@Table(name = "user_info")
+@Table(name = "delivery_info")
 @Data
-public class UserInfoEntity {
+public class DeliveryInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private int user_id;
+    @Column(name = "delivery_id")
+    private int delivery_id;
 
-    @Column(name = "user_name")
-    private String user_name;
+    @Column(name = "delivery_name")
+    private String delivery_name;
 
     @Column(name = "phone_number")
     private String phone_number;
@@ -28,8 +28,7 @@ public class UserInfoEntity {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // 避免循環引用
     private List<OrderInfoEntity> orders;
-
 }

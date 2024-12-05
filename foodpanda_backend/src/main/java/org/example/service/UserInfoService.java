@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import org.example.repository.UserInfoRepo;
-import org.example.entity.UserInfoEntity;
 
 @Service
 public class UserInfoService {
