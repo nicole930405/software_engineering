@@ -8,7 +8,8 @@ import java.util.List;
 
 @Repository
 public interface StoreInfoRepo extends JpaRepository<StoreInfoEntity, Integer> {
-    List<UserInfoEntity> findByCity(String city);
-    List<StoreInfoEntity> findByCityId(int cityId); // 按照城市 ID 查询店家
+    List<StoreInfoEntity> findByCity_Name(String cityName);
+    List<StoreInfoEntity> findByCityId(String cityId); // 按照城市 ID 查询店家
+    List<StoreInfoEntity> findByCityIdAndStoreId(String cityId, int storeId);
 
 }

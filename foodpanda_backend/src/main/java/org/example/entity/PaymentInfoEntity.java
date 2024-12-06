@@ -26,7 +26,7 @@ public class PaymentInfoEntity {
     @Column(name = "payment_status")
     private int payment_status;
 
-    @OneToMany(mappedBy = "paymentInfo", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude // 避免循環引用
-    private List<OrderInfoEntity> orders;
+//    @OneToMany(mappedBy = "paymentInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @ToString.Exclude // 避免循環引用
+//    private List<OrderInfoEntity> orders;
 }

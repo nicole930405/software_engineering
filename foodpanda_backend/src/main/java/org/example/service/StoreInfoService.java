@@ -19,11 +19,15 @@ public class StoreInfoService {
 
     /**
      * 根据城市 ID 获取所有店家信息
-     * @param cityId 城市 ID
+     * @param city_id 城市 ID
      * @return 店家列表
      */
-    public List<StoreInfoEntity> getStoresByCityId(int cityId) {
-        return storeInfoRepo.findByCityId(cityId);
+    public List<StoreInfoEntity> getStoresByCityId(String city_id) {
+        return storeInfoRepo.findByCityId(city_id);
+    }
+
+    public List<StoreInfoEntity> getStoreByCityAndSite(String city_id, int site_id) {
+        return storeInfoRepo.findByCityIdAndStoreId(city_id,site_id);
     }
 
 }

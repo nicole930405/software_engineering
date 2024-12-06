@@ -28,7 +28,7 @@ public class DeliveryInfoEntity {
     @Column(name = "address")
     private String address;
 
-    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude // 避免循環引用
-    private List<OrderInfoEntity> orders;
+//    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @ToString.Exclude // 避免循環引用
+//    private List<OrderInfoEntity> orders;
 }

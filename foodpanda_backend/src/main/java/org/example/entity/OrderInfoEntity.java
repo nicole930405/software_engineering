@@ -44,7 +44,7 @@ public class OrderInfoEntity {
     @JoinColumn(name = "store_id", nullable = false)
     private StoreInfoEntity store;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_id", nullable = false)
-    private DeliveryInfoEntity delivery;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "delivery_id", nullable = false)
+//    private DeliveryInfoEntity delivery;
 }

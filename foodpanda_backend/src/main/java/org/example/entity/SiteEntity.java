@@ -15,7 +15,8 @@ public class SiteEntity {
     @Column(name = "site")
     private String site;
 
-    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<CityEntity> city;
+    @ManyToOne
+    @JoinColumn(name = "city_id", nullable = false)  // 這是外鍵，指向 CityEntity 的主鍵
+    private CityEntity city;
 
 }

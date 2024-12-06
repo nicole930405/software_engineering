@@ -11,7 +11,7 @@ public class StoreInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "store_id")
-    private int store_id;
+    private int storeId;
 
     @Column(name = "store_name")
     private String store_name;
@@ -29,5 +29,9 @@ public class StoreInfoEntity {
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // 避免循環引用
     private List<OrderInfoEntity> orders;
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude // 避免循環引用
+    private List<MenuInfoEntity> menu;
 
 }

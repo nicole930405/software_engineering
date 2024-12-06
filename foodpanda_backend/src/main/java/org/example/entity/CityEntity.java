@@ -10,13 +10,13 @@ import java.util.List;
 public class CityEntity {
     @Id
     @Column(name = "city_id")
-    private String city_id;
+    private String id;
 
     @Column(name = "city")
-    private String city;
+    private String name;
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<StoreInfoEntity> stores;
+    private List<StoreInfoEntity> store;
 
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StoreInfoEntity> site;
