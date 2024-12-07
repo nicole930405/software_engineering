@@ -26,8 +26,8 @@ public class StoreInfoService {
         return storeInfoRepo.findByCityId(city_id);
     }
 
-    public List<StoreInfoEntity> getStoreByCityAndSite(String city_id, int site_id) {
-        return storeInfoRepo.findByCityIdAndStoreId(city_id,site_id);
+    public List<StoreInfoEntity> getStoreByCityAndSite(String city_id, String site_id) {
+        return storeInfoRepo.findByCityIdAndSiteId(city_id,site_id);
     }
 
 }

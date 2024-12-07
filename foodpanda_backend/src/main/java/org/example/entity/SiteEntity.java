@@ -10,7 +10,7 @@ import java.util.List;
 public class SiteEntity {
     @Id
     @Column(name = "site_id")
-    private String site_id;
+    private String id;
 
     @Column(name = "site")
     private String site;
@@ -18,5 +18,8 @@ public class SiteEntity {
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)  // 這是外鍵，指向 CityEntity 的主鍵
     private CityEntity city;
+
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<StoreInfoEntity> store;
 
 }

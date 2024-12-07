@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,12 +32,14 @@ public class UserInfoController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/byMail")
-    public ResponseEntity<UserInfoEntity> getUserByMail(@RequestParam String mail) {
+    @PostMapping("/byMail")
+    public ResponseEntity<UserInfoEntity> getUserByMail(@RequestBody Map<String, String> request) {
+        String mail = request.get("mail"); // 從請求體中獲取 `mail`
         Optional<UserInfoEntity> user = userInfoService.getUserByMail(mail);
         return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<UserInfoEntity> updateUser(@PathVariable int id, @RequestBody UserInfoEntity userDetails) {
