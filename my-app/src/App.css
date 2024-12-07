@@ -400,3 +400,11 @@ body {
   border-radius: 15px; /* 四個角圓弧 */
   margin-left: 90px;
 }
+
+/*-------------------------------------------*/
+/*store*/
+.move_store_text{
+  /*margin-top: 90px;*/
+  margin-left: 15px;
+  font-weight: bold;
+}
