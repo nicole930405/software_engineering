@@ -203,8 +203,57 @@ body {
   box-sizing: border-box; /* 確保內邊距包含在寬度內 */
 }
 
+.password_input_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
+.password_input_box input {
+  width: 100%;  /* 輸入框的寬度 */
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* 確保內邊距包含在寬度內 */
+}
+.name_input_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
+.name_input_box input {
+  width: 100%;  /* 輸入框的寬度 */
+  padding: 10px;
+  margin-bottom: 0px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* 確保內邊距包含在寬度內 */
+}
+.phone_input_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.phone_input_box input {
+  width: 100%;  /* 輸入框的寬度 */
+  padding: 12px;
+  margin-bottom: 0px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* 確保內邊距包含在寬度內 */
+}
 /* 提交按鈕樣式 */
 .submit_button_box button {
   width: 100%; /* 確保按鈕的寬度是容器的100% */
