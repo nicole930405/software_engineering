@@ -375,3 +375,11 @@ body {
   margin-left: 40px;
   margin-top: 20px;
 }
+
+/*-------------------------------------------*/
+/*home*/
+.label {
+  background: white; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 90px;
+}

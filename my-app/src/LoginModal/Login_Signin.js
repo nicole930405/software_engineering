@@ -119,7 +119,7 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
             console.log("提交的用户数据:", newUser); // 添加日志，查看提交的数据
 
             try {
-                const response = await axios.post('http://localhost:8080/user/addUser', newUser);
+                const response = await axios.post(`http://localhost:8080/user/addUser`, newUser);
                 if (response.status === 201) {
                     alert("註冊成功！");
                     setIsRegistering(false); // 注册成功后隐藏注册表单
