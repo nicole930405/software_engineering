@@ -5,16 +5,18 @@ import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import IconButton from '@mui/material/IconButton';
 import emailjs from 'emailjs-com';
 
-function Login_Signin({ isOpen, onClose}) {
+function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     const [email, setEmail] = useState("");  // 儲存用戶輸入的電子郵件
     const [emailError, setEmailError] = useState("");  // 儲存電子郵件錯誤信息
     const [isEmailValid, setIsEmailValid] = useState(false);  // 驗證電子郵件格式是否正確
+    const [password, setPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [showPasswordInput, setShowPasswordInput] = useState(false);  // 控制是否顯示密碼輸入框
     const [name, setName] = useState("");  // 儲存註冊用戶的姓名
     const [phoneNumber, setPhoneNumber] = useState("");  // 儲存註冊用戶的電話
     const [isRegistering, setIsRegistering] = useState(false);  // 控制是否進行註冊流程
     const [registerPassword, setRegisterPassword] = useState("");  // 儲存註冊時的密碼
-
+    const [currentUser, setCurrentUser] = useState(null); // 儲存用戶信息
     const [verificationCode, setVerificationCode] = useState("");  // 存儲生成的驗證碼
     const [userInputCode, setUserInputCode] = useState("");  // 存儲用戶輸入的驗證碼
     const [showVerificationInput, setShowVerificationInput] = useState(false); // 控制是否顯示驗證碼輸入框
@@ -52,13 +54,12 @@ function Login_Signin({ isOpen, onClose}) {
         }
     };
 
-    // 檢查電子郵件是否已註冊
     const checkEmailExistence = async () => {
         try {
             const response = await axios.post("http://localhost:8080/user/byMail", { mail: email });
-
             if (response.data) {
-                setEmailError("該電子郵件已註冊");  // 如果已註冊，顯示錯誤信息
+                setEmailError("該電子郵件已註冊");
+                setCurrentUser(response.data); // 保存用戶信息
                 setShowPasswordInput(true);  // 顯示密碼輸入框
             } else {
                 setEmailError("");  // 清除錯誤信息
@@ -68,12 +69,44 @@ function Login_Signin({ isOpen, onClose}) {
         } catch (error) {
             console.error("Email 檢查失敗:", error);
             if (error.response && error.response.status === 404) {
-                setEmailError("該電子郵件尚未註冊");  // 如果電子郵件尚未註冊，顯示相應錯誤信息
+                setEmailError("該電子郵件尚未註冊");
                 setShowVerificationInput(true);  // 顯示驗證碼輸入框
                 generateVerificationCode();  // 生成驗證碼
             } else {
-                setEmailError("檢查電子郵件時出錯，請稍後再試");  // 顯示通用錯誤信息
+                setEmailError("檢查電子郵件時出錯，請稍後再試");
             }
+        }
+    };
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value);
+    };
+
+    const handleSubmitPassword = () => {
+        if (password === "") {
+            setPasswordError("請輸入密碼");
+        } else {
+            setPasswordError("");
+            checkPassword();
+        }
+    };
+
+
+    const checkPassword = async () => {
+        try {
+            const response = await axios.post("http://localhost:8080/user/byMail", { mail: email });
+            if (response.data && response.data.password === password) {
+                console.log("登入成功");
+                setCurrentUser(response.data); // 保存當前用戶數據
+                getUser(response.data); // 回傳當前使用者
+                now_stage(true); // 更新登入狀態
+                onClose(); // 關閉視窗
+            } else {
+                setPasswordError("密碼錯誤");
+            }
+        } catch (error) {
+            console.error("密碼檢查失敗:", error);
+            setPasswordError("檢查密碼時出錯");
         }
     };
 
@@ -173,6 +206,34 @@ function Login_Signin({ isOpen, onClose}) {
                             </button>
                         </div>
                         {emailError && <p className="error_message">{emailError}</p>}
+                    </>
+                )}
+
+                {/* 密碼輸入框 */}
+                {showPasswordInput && (
+                    <>
+                        <div className="password_input_box">
+                            <input
+                                type="password"
+                                placeholder="密碼"
+                                value={password}
+                                onChange={handlePasswordChange}
+                            />
+                        </div>
+                        <div className="submit_button_box">
+                            <button
+                                className="submit_button_box"
+                                onClick={handleSubmitPassword}
+                                disabled={password === ""}
+                                style={{
+                                    backgroundColor: password === "" ? '#ccc' : '#c21760',
+                                    cursor: password === "" ? 'not-allowed' : 'pointer',
+                                }}
+                            >
+                                使用密碼登入
+                            </button>
+                        </div>
+                        {passwordError && <p className="error_message">{passwordError}</p>}
                     </>
                 )}
 
