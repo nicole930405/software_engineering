@@ -54,7 +54,9 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
 
     const checkEmailExistence = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/user/byMail?mail=${email}`);
+            const response = await axios.post("http://localhost:8080/user/byMail", {
+                mail: email, // 發送的 JSON 請求體
+            });
             if (response.data) {
                 // 如果email存在，顯示密碼輸入框
                 setCurrentUser(response.data); // 保存用户信息
@@ -88,7 +90,9 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
 
     const checkPassword = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/user/byMail?mail=${email}`);
+            const response = await axios.post("http://localhost:8080/user/byMail", {
+                mail: email, // 發送的 JSON 請求體
+            });
             if (response.data && response.data.password === password) {
                 console.log("登入成功");
                 setCurrentUser(response.data); // 保存當前用戶數據
