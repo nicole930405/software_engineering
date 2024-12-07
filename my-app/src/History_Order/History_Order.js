@@ -1,7 +1,7 @@
 import React from "react";
 import "../App.css"
 
-const History_Order = () => {
+function History_Order ()  {
     return (
         <div className="background">
             <div className="move_text">

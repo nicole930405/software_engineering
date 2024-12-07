@@ -10,7 +10,7 @@ import Top_Bar from "./Top_Bar";
 import Shopping_Cart from "./Shopping_Cart/Shopping_Cart";
 import Payment_Method from "./Shopping_Cart/Payment_Method";
 import Follow_order from "./Follow_Order/Follow_order";
-import Store from "./Restaurant/store";
+import Store from "./Restaurant/Store";
 
 
 
