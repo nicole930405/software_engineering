@@ -7,15 +7,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/menu")
 public class MenuInfoController {
     @Autowired
     private MenuInfoService menuInfoService;
 
-    @GetMapping("/byStoreId/{store_id}")
-    public List<MenuInfoEntity> getMenuByStoreId(@PathVariable("store_id") int store_id) {
-        return menuInfoService.getMenuByStoreId(store_id);
+    /**
+     * 根据店家 ID 获取菜单列表
+     * @param request 包含店家 ID 的请求体
+     * @return 菜单列表
+     */
+    @PostMapping("/byStoreId")
+    public List<MenuInfoEntity> getMenuByStoreId(@RequestBody Map<String, Integer> request) {
+        Integer storeId = request.get("storeId");
+        return menuInfoService.getMenuByStoreId(storeId);
     }
 }

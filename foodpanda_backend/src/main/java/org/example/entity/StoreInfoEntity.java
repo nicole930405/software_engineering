@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "store_info")
@@ -24,7 +26,13 @@ public class StoreInfoEntity {
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false) // 外鍵名稱與資料庫一致
+    @JsonIgnore
     private CityEntity city;
+
+    @ManyToOne
+    @JoinColumn(name = "site_id", nullable = false) // 外鍵名稱與資料庫一致
+    @JsonIgnore
+    private SiteEntity site;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // 避免循環引用

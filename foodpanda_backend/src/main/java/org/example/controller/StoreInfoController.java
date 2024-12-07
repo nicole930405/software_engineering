@@ -6,8 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/store")
 public class StoreInfoController {
@@ -16,16 +17,17 @@ public class StoreInfoController {
     private StoreInfoService storeInfoService;
 
     //用縣市找店家
-    @GetMapping("/byCity/{city_id}")
-    public List<StoreInfoEntity> geyStoreByCity(@PathVariable String city_id) {
-        return storeInfoService.getStoresByCityId(city_id);
+    @PostMapping("/byCity/{city_id}")
+    public List<StoreInfoEntity> geyStoreByCity(@RequestBody Map<String, String> request) {
+        String cityId = request.get("city_id");
+        return storeInfoService.getStoresByCityId(cityId);
     }
 
     //用縣市和區域找店家
-    @GetMapping("/byCitySite")
-    public List<StoreInfoEntity> getStoreByCitySite(
-            @RequestParam String city_id,
-            @RequestParam int site_id) {
-        return storeInfoService.getStoreByCityAndSite(city_id, site_id);
+    @PostMapping("/byCitySite")
+    public List<StoreInfoEntity> getStoreByCitySite(@RequestBody Map<String, Object> request) {
+        String cityId = (String) request.get("city_id");
+        String siteId = (String) request.get("site_id");
+        return storeInfoService.getStoreByCityAndSite(cityId, siteId);
     }
 }
