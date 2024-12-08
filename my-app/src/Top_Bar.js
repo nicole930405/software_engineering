@@ -19,7 +19,7 @@ function Top_Bar({ set_User }) {
     const [LoginModalOpen, setLoginModalOpen] = useState(false); // 登入頁面
     const [FunctionList, setFunctionList] = useState(false); // 登入的使用者功能
     const [user, setUser] = useState(null); // 用來儲存登入的用戶資料
-    console.log(user);
+    //console.log(user);
     set_User(user);
 
     const handleIconClick_person = () => {
