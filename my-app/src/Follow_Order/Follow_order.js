@@ -10,8 +10,8 @@ const Follow_Order = () => {
     const [takeMeal, setTakeMeal] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [print, setPrint] = useState("訂單準備中...");
-    const [lastNotifiedStatus, setLastNotifiedStatus] = useState(""); // 用于存储上次的状态
-    const navigate = useNavigate(); //轉跳頁便用
+    const [lastNotifiedStatus, setLastNotifiedStatus] = useState("");
+    const navigate = useNavigate();
 
     const prepare = "訂單準備中...";
     const find = "尋找外送員中...";
@@ -87,7 +87,7 @@ const Follow_Order = () => {
                 setPrint(completed);
                 setTimeout(() => {
                     navigate("/");
-                }, 2000);
+                }, 10000);
             }
         }
     }, [currentTime, orderPreparing, findingDealer, takeMeal, arrivalTime]);
