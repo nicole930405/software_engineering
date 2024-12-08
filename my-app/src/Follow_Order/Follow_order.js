@@ -8,6 +8,7 @@ const Follow_Order = () => {
     const [takeMeal, setTakeMeal] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [print, setPrint] = useState("訂單準備中...");
+    const [lastNotifiedStatus, setLastNotifiedStatus] = useState(""); // 用于存储上次的状态
 
     const prepare = "訂單準備中...";
     const find = "尋找外送員中...";
@@ -58,26 +59,24 @@ const Follow_Order = () => {
     }, []);
     useEffect(() => {
         if (orderPreparing && findingDealer && takeMeal && arrivalTime) {
+            let newStatus = "";
+
             if (currentTime >= orderPreparing.getTime() && currentTime < findingDealer.getTime()) {
-                setPrint(find);
-                if (Notification.permission === "granted") {
-                    new Notification("訂單狀態更新", { body: find });
-                }
+                newStatus = find;
             } else if (currentTime >= findingDealer.getTime() && currentTime < takeMeal.getTime()) {
-                setPrint(goToTake);
-                if (Notification.permission === "granted") {
-                    new Notification("訂單狀態更新", { body: goToTake });
-                }
+                newStatus = goToTake;
             } else if (currentTime >= takeMeal.getTime() && currentTime < arrivalTime.getTime()) {
-                setPrint(comeHome);
-                if (Notification.permission === "granted") {
-                    new Notification("訂單狀態更新", { body: comeHome });
-                }
+                newStatus = comeHome;
             } else if (currentTime >= arrivalTime.getTime()) {
-                setPrint(delivered);
+                newStatus = delivered;
+            }
+
+            if (newStatus !== lastNotifiedStatus) {
+                setPrint(newStatus);
                 if (Notification.permission === "granted") {
-                    new Notification("訂單狀態更新", { body: delivered });
+                    new Notification("訂單狀態更新", { body: newStatus });
                 }
+                setLastNotifiedStatus(newStatus);
             }
         }
     }, [currentTime, orderPreparing, findingDealer, takeMeal, arrivalTime]);
