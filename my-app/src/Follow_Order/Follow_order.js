@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";//轉跳頁面
+
 import "../App.css";
 const Follow_Order = () => {
     const [currentDateTime, setCurrentDateTime] = useState('');
@@ -9,12 +11,14 @@ const Follow_Order = () => {
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [print, setPrint] = useState("訂單準備中...");
     const [lastNotifiedStatus, setLastNotifiedStatus] = useState(""); // 用于存储上次的状态
+    const navigate = useNavigate(); //轉跳頁便用
 
     const prepare = "訂單準備中...";
     const find = "尋找外送員中...";
     const goToTake = "外送員kyle正準備前往取餐";
     const comeHome = "外送員kyle正在前往你家的路上...";
     const delivered = "訂單已送達";
+    const completed = "已完成";
 
     const formatTime = (date) => {
         return date.toLocaleString('zh-TW', {
@@ -31,6 +35,7 @@ const Follow_Order = () => {
             day: 'numeric'    // 日
         });
     };
+
 
     useEffect(() => {
 
@@ -77,6 +82,12 @@ const Follow_Order = () => {
                     new Notification("訂單狀態更新", { body: newStatus });
                 }
                 setLastNotifiedStatus(newStatus);
+            }
+            if (newStatus === delivered) {
+                setPrint(completed);
+                setTimeout(() => {
+                    navigate("/");
+                }, 2000);
             }
         }
     }, [currentTime, orderPreparing, findingDealer, takeMeal, arrivalTime]);
