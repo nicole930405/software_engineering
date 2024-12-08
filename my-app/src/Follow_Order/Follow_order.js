@@ -32,6 +32,10 @@ const Follow_Order = () => {
     };
 
     useEffect(() => {
+
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
         const currentDate = new Date();
 
         setCurrentDateTime(formatTime(currentDate));
@@ -57,12 +61,24 @@ const Follow_Order = () => {
         if (orderPreparing && findingDealer && takeMeal && arrivalTime) {
             if (currentTime >= orderPreparing.getTime() && currentTime < findingDealer.getTime()) {
                 setPrint(find);
+                if (Notification.permission === "granted") {
+                    new Notification("訂單狀態更新", { body: find });
+                }
             } else if (currentTime >= findingDealer.getTime() && currentTime < takeMeal.getTime()) {
                 setPrint(goToTake);
+                if (Notification.permission === "granted") {
+                    new Notification("訂單狀態更新", { body: goToTake });
+                }
             } else if (currentTime >= takeMeal.getTime() && currentTime < arrivalTime.getTime()) {
                 setPrint(comeHome);
+                if (Notification.permission === "granted") {
+                    new Notification("訂單狀態更新", { body: comeHome });
+                }
             } else if (currentTime >= arrivalTime.getTime()) {
                 setPrint(delivered);
+                if (Notification.permission === "granted") {
+                    new Notification("訂單狀態更新", { body: delivered });
+                }
             }
         }
     }, [currentTime, orderPreparing, findingDealer, takeMeal, arrivalTime]);
