@@ -56,7 +56,6 @@ const Follow_Order = () => {
 
         return () => clearInterval(timer);
     }, []);
-
     useEffect(() => {
         if (orderPreparing && findingDealer && takeMeal && arrivalTime) {
             if (currentTime >= orderPreparing.getTime() && currentTime < findingDealer.getTime()) {
