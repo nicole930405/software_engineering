@@ -11,6 +11,7 @@ import Shopping_Cart from "./Shopping_Cart/Shopping_Cart";
 import Payment_Method from "./Shopping_Cart/Payment_Method";
 import Follow_order from "./Follow_Order/Follow_order";
 import Store from "./Restaurant/Store";
+import Store_Info from "./Restaurant/Store_Info";
 
 
 
@@ -47,7 +48,10 @@ function App() {
     const [takeMethod, setTakeMethod] = useState({});
 
     const [city, setCity] = useState("");
-
+    const [storeId, setGetStoreId] = useState(0);
+    //console.log(storeId);
+    const [getStoreName, setGetStoreName] = useState("");
+    //console.log(getStoreName);
   return (
       <Router>
         <div className="background">
@@ -59,7 +63,8 @@ function App() {
                 <Route path="/shopping-cart" element={<Shopping_Cart setTakeMethod={setTakeMethod}/>}/>
                 <Route path="/payment-method" element={<Payment_Method getAddress={getAddress} User={user} takeMethod={takeMethod} porpRecordOrder={setRecordOrder}/>}/>
                 <Route path="/follow-order" element={<Follow_order/>}/>
-                <Route path="/store" element={<Store city={city}/>}/>
+                <Route path="/store" element={<Store city={city} setGetId={setGetStoreId} setGetStoreName={setGetStoreName}/>}/>
+                <Route path="/store-info" element={<Store_Info storeId={storeId} getStoreName={getStoreName}/>}/>
             </Routes>
         </div>
       </Router>

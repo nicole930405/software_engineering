@@ -31,3 +31,4 @@ public class StoreInfoController {
         return storeInfoService.getStoreByCityAndSite(cityId, siteId);
     }
 }
+
