@@ -16,7 +16,7 @@ public class MenuInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meal_id")
-    private int meal_id;
+    private int mealId;
 
     @Column(name = "meal_name")
     private String meal_name;
@@ -34,6 +34,9 @@ public class MenuInfoEntity {
     @JoinColumn(name = "storeId", nullable = false)
     @JsonIgnore
     private StoreInfoEntity store;
+
+    @ManyToMany(mappedBy = "meals") // 這裡與 OrderDetailEntity 中的關聯字段一致
+    private List<OrderDetailEntity> orderDetails;
 
 
 }

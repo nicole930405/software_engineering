@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface StoreInfoRepo extends JpaRepository<StoreInfoEntity, Integer> {
     List<StoreInfoEntity> findByCity_Name(String cityName);
-    List<StoreInfoEntity> findByCityId(String cityId); // 按照城市 ID 查询店家
-    List<StoreInfoEntity> findByCityIdAndSiteId(String cityId, String siteId);
+    List<StoreInfoEntity> findByCity_CityId(String cityId); // 按照城市 ID 查询店家
+    List<StoreInfoEntity> findByCityCityIdAndSiteId(String cityId, String siteId);
 
 }

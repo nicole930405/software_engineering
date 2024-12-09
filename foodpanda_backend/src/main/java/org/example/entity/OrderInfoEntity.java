@@ -1,7 +1,11 @@
 package org.example.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 import org.example.entity.UserInfoEntity;
+
+import java.util.List;
 
 @Entity
 @Table(name = "order_info")
@@ -43,6 +47,11 @@ public class OrderInfoEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
     private StoreInfoEntity store;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "detail_id", nullable = false)
+    @JsonIgnore
+    private OrderDetailEntity orderdetail;
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "delivery_id", nullable = false)

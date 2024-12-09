@@ -23,11 +23,11 @@ public class StoreInfoService {
      * @return 店家列表
      */
     public List<StoreInfoEntity> getStoresByCityId(String city_id) {
-        return storeInfoRepo.findByCityId(city_id);
+        return storeInfoRepo.findByCity_CityId(city_id);
     }
 
     public List<StoreInfoEntity> getStoreByCityAndSite(String city_id, String site_id) {
-        return storeInfoRepo.findByCityIdAndSiteId(city_id,site_id);
+        return storeInfoRepo.findByCityCityIdAndSiteId(city_id,site_id);
     }
 
 }

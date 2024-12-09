@@ -17,8 +17,8 @@ public class StoreInfoController {
     private StoreInfoService storeInfoService;
 
     //用縣市找店家
-    @PostMapping("/byCity/{city_id}")
-    public List<StoreInfoEntity> geyStoreByCity(@RequestBody Map<String, String> request) {
+    @PostMapping("/byCity")
+    public List<StoreInfoEntity> getStoreByCity(@RequestBody Map<String, String> request) {
         String cityId = request.get("city_id");
         return storeInfoService.getStoresByCityId(cityId);
     }
