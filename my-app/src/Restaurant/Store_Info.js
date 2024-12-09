@@ -91,22 +91,48 @@ function Store_Info ({storeId, getStoreName})  {
         { meal_id: 3, meal_name: '拿鐵', meal_price: 60, meal_label: '飲品', meal_option: null },
         { meal_id: 4, meal_name: '卡布奇諾', meal_price: 70, meal_label: '飲品', meal_option: null },
     ]);
+    const [number, setNumber] = useState(0);
     const [mealName, setMealName] = useState("");
     const [mealPrice, setMealPrice] = useState(0);
     const [showMenuDetail, setShowMenuDetail] = useState(false);
+    const [totalPrice, setTotalPrice] = useState(0);
+
     const clickOrder=(meal_name, meal_price)=>{
         setShowMenuDetail(true);
         setMealName(meal_name);
         setMealPrice(meal_price);
+        setNumber(0);
+        setTotalPrice(0);
     }
 
     const closeModal = () => {
         setShowMenuDetail(false);
     };
-    const [number, setNumber] = useState(0);
+
+
     const [showNumber, setShowNumber] = useState(false);
+
+
+    const [totalMealInfo, setTotalMealInfo] = useState({
+        meal_price:0,
+        meal_name:'',
+        meal_number:0,
+    })
+
+
     const addNumber=()=>{
-        setNumber(prevNumber => prevNumber + 1);
+        const nextNumber = number + 1;
+        const price = totalPrice + mealPrice;
+        setNumber(nextNumber);
+        setTotalPrice(price);
+        //setNumber(prevNumber => prevNumber + 1);
+        // setTotalPrice(prevPrice => prevPrice + mealPrice);
+        setTotalMealInfo((prevInfo)=>({
+            ...prevInfo,
+            meal_name: mealName,
+            meal_price: price,
+            meal_number: nextNumber,
+        }))
         if(number != 0){
             setShowNumber(true);
         }else{
@@ -116,7 +142,18 @@ function Store_Info ({storeId, getStoreName})  {
 
     const subNumber=()=>{
         if(number != 0){
-            setNumber(prevNumber => prevNumber - 1);
+            const nextNumber = number - 1;
+            const price = totalPrice - mealPrice;
+            setNumber(nextNumber);
+            setTotalPrice(price);
+            // setNumber(prevNumber => prevNumber - 1);
+            // setTotalPrice(prevPrice => prevPrice - mealPrice);
+            setTotalMealInfo((prevInfo)=>({
+                ...prevInfo,
+                meal_name: mealName,
+                meal_price: price,
+                meal_number: nextNumber,
+            }))
             if(number == 0){
                 setShowNumber(false);
             }else{
@@ -210,16 +247,17 @@ function Store_Info ({storeId, getStoreName})  {
                             <Button
                                 variant="contained"
                                 sx={{
-                                    backgroundColor: number > 0 ? 'hotpink' : 'gray', // 根據 number 改變顏色
+                                    backgroundColor: number > 0 ? '#e04c7f' : 'gray', // 根據 number 改變顏色
                                     '&:hover': {
 
                                     },
                                 }}
                                 disabled={number === 0} // 如果 number 等於 0 禁用按鈕
-                                onClick={() => {
+                                onClick={() =>{
                                     if (number > 0) {
-                                        console.log("已放入購物車"); // 這裡放入實際的功能
-                                    }
+                                    console.log("已放入購物車"); // 這裡放入實際的功能
+                                        console.log(totalMealInfo);
+                                }
                                 }}
                             >
                                 放入購物車

@@ -30,6 +30,8 @@ function Home({setGetAddress, User, setCity}) {
     const [address, setAddress] = useState("");
     setGetAddress(address);
 
+
+
     const handleLngLat = (data1, data2) => {
         setLng(data1);
         setLat(data2);

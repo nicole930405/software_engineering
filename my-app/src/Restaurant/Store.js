@@ -87,7 +87,6 @@ function Store  ({city, setGetId,setGetStoreName})  {
 
 
 
-
     return (
         <>
             <div className="background">
