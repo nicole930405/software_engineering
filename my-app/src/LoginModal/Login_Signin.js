@@ -3,73 +3,78 @@ import axios from 'axios';
 import '../App.css';
 import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 import IconButton from '@mui/material/IconButton';
+import emailjs from 'emailjs-com';
 
-function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
-    // 儲存 email 和錯誤信息
-    const [email, setEmail] = useState("");
-    const [emailError, setEmailError] = useState("");
-    const [isEmailValid, setIsEmailValid] = useState(false); // 用來儲存電子郵件是否有效
+function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
+    const [email, setEmail] = useState("");  // 儲存用戶輸入的電子郵件
+    const [emailError, setEmailError] = useState("");  // 儲存電子郵件錯誤信息
+    const [isEmailValid, setIsEmailValid] = useState(false);  // 驗證電子郵件格式是否正確
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
-    const [showPasswordInput, setShowPasswordInput] = useState(false); // 控制是否顯示密碼框
+    const [showPasswordInput, setShowPasswordInput] = useState(false);  // 控制是否顯示密碼輸入框
+    const [name, setName] = useState("");  // 儲存註冊用戶的姓名
+    const [phoneNumber, setPhoneNumber] = useState("");  // 儲存註冊用戶的電話
+    const [isRegistering, setIsRegistering] = useState(false);  // 控制是否進行註冊流程
+    const [registerPassword, setRegisterPassword] = useState("");  // 儲存註冊時的密碼
     const [currentUser, setCurrentUser] = useState(null); // 儲存用戶信息
-    const [name, setName] = useState(""); // 姓名
-    const [phoneNumber, setPhoneNumber] = useState(""); // 電話號碼
-    const [isRegistering, setIsRegistering] = useState(false); // 控制註冊表單顯示
-    const [registerPassword, setRegisterPassword] = useState(""); // 用於儲存註冊密碼
-    const [registerPasswordError, setRegisterPasswordError] = useState(""); // 密碼錯誤信息
+    const [verificationCode, setVerificationCode] = useState("");  // 存儲生成的驗證碼
+    const [userInputCode, setUserInputCode] = useState("");  // 存儲用戶輸入的驗證碼
+    const [showVerificationInput, setShowVerificationInput] = useState(false); // 控制是否顯示驗證碼輸入框
+    const [isCodeValid, setIsCodeValid] = useState(false); // 驗證碼是否有效
 
-
+    // 背景區域點擊時關閉登錄框
     const handleBackgroundClick = (event) => {
-        // 點擊背景時關閉
         if (event.target === event.currentTarget) {
-            onClose(); // 調用 onClose 函數
+            onClose();
         }
     };
 
     const closeLoginBox = () => {
-        onClose(); // 按下叉叉關閉視窗
+        onClose();
     };
 
-
+    // 處理電子郵件輸入變更
     const handleEmailChange = (event) => {
         const emailInput = event.target.value;
         setEmail(emailInput);
-
-        // 檢查電子郵件格式是否有效
         const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        // 檢查電子郵件格式是否正確
         if (emailPattern.test(emailInput)) {
-            setEmailError(""); // 格式正確，清除錯誤信息
-            setIsEmailValid(true); // 設置為有效
+            setEmailError("");  // 清除錯誤信息
+            setIsEmailValid(true);  // 設置電子郵件格式為有效
         } else {
-            setIsEmailValid(false); // 設置為無效
+            setIsEmailValid(false);  // 設置電子郵件格式為無效
         }
     };
 
+    // 處理提交電子郵件
     const handleSubmitEmail = async () => {
         if (isEmailValid) {
-            await checkEmailExistence();
+            await checkEmailExistence();  // 如果電子郵件格式有效，檢查電子郵件是否已註冊
         }
     };
 
     const checkEmailExistence = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/user/byMail?mail=${email}`);
+            const response = await axios.post("http://localhost:8080/user/byMail", { mail: email });
             if (response.data) {
-                // 如果email存在，顯示密碼輸入框
-                setCurrentUser(response.data); // 保存用户信息
-                setShowPasswordInput(true);
-                setEmailError("");  // 清除錯誤信息
+                setEmailError("該電子郵件已註冊");
+                setCurrentUser(response.data); // 保存用戶信息
+                setShowPasswordInput(true);  // 顯示密碼輸入框
             } else {
-                // 如果email不存在，顯示錯誤信息
-                setEmailError("該電子郵件未註冊");
-                setShowPasswordInput(false);  // 隱藏密碼輸入框
+                setEmailError("");  // 清除錯誤信息
+                setShowVerificationInput(true);  // 顯示驗證碼輸入框
+                generateVerificationCode();  // 生成驗證碼
             }
         } catch (error) {
             console.error("Email 檢查失敗:", error);
-            setEmailError("");
-            setShowPasswordInput(false);  // 遇錯誤時隱藏密碼框
-            setIsRegistering(true);  // 出錯時顯示註冊頁面
+            if (error.response && error.response.status === 404) {
+                setEmailError("該電子郵件尚未註冊");
+                setShowVerificationInput(true);  // 顯示驗證碼輸入框
+                generateVerificationCode();  // 生成驗證碼
+            } else {
+                setEmailError("檢查電子郵件時出錯，請稍後再試");
+            }
         }
     };
 
@@ -86,9 +91,10 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
         }
     };
 
+
     const checkPassword = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/user/byMail?mail=${email}`);
+            const response = await axios.post("http://localhost:8080/user/byMail", { mail: email });
             if (response.data && response.data.password === password) {
                 console.log("登入成功");
                 setCurrentUser(response.data); // 保存當前用戶數據
@@ -103,37 +109,69 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
             setPasswordError("檢查密碼時出錯");
         }
     };
-    const handleRegisterPasswordChange = (event) => {
-        setRegisterPassword(event.target.value);
-        setRegisterPasswordError(""); // 每次修改密码时清除错误信息
+
+    // 生成隨機驗證碼並發送郵件
+    const generateVerificationCode = () => {
+        const code = Math.floor(100000 + Math.random() * 900000);  // 生成6位隨機數字
+        setVerificationCode(code);  // 設置驗證碼
+        console.log("生成的驗證碼:", code);
+        const templateParams = {
+            to_name: email,  // 收件人姓名（用戶電子郵件）
+            from_name: "kyle",  // 發件人名稱
+            verification_code: code,  // 生成的驗證碼
+            to_email: email,  // 收件人電子郵件
+        };
+        emailjs.send(
+            'service_5dih0ft',  // 服務 ID
+            'template_h133v1b',  // 模板 ID
+            templateParams,
+            'l66iH9Aljyjc_k-7T'  // 用戶 ID
+        )
     };
+
+    // 處理用戶輸入的驗證碼變更
+    const handleVerificationCodeChange = (event) => {
+        setUserInputCode(event.target.value);
+    };
+
+    // 驗證用戶輸入的驗證碼
+    const verifyCode = () => {
+        if (userInputCode === verificationCode.toString()) {
+            setIsCodeValid(true);  // 設置驗證碼為有效
+            alert("驗證成功！請完成註冊");
+            setIsRegistering(true);  // 進入註冊流程
+        } else {
+            setIsCodeValid(false);  // 設置驗證碼為無效
+            alert("驗證碼錯誤！");
+        }
+    };
+
+    // 註冊提交，將用戶信息送至後端
     const handleRegisterSubmit = async () => {
-        if (name && phoneNumber && registerPassword) {
+        if (name && phoneNumber && registerPassword) {  // 檢查是否填寫所有必填欄位
             const newUser = {
-                user_name: name,  // 用户名
-                phone_number: phoneNumber,  // 电话号码
-                mail: email,  // 邮箱
-                password: registerPassword,  // 密码
-                address: ""  // 地址默认为空
+                user_name: name,
+                phone_number: phoneNumber,
+                mail: email,
+                password: registerPassword,
+                address: ""  // 默認地址為空
             };
-            console.log("提交的用户数据:", newUser); // 添加日志，查看提交的数据
 
             try {
-                const response = await axios.post('http://localhost:8080/user/addUser', newUser);
+                const response = await axios.post(`http://localhost:8080/user/addUser`, newUser);
                 if (response.status === 201) {
                     alert("註冊成功！");
-                    setIsRegistering(false); // 注册成功后隐藏注册表单
-                    setShowPasswordInput(true); // 显示密码框
+                    setIsRegistering(false);  // 註冊成功後退出註冊流程
+                    setShowPasswordInput(true);  // 顯示密碼輸入框
                 }
             } catch (error) {
                 console.error("註冊失敗:", error);
                 alert("註冊失敗，請稍後再試。");
             }
         } else {
-            alert("請填寫所有欄位！");
+            alert("請填寫所有欄位！");  // 提示用戶填寫所有必要欄位
         }
     };
-
 
     return isOpen ? (
         <div className="login_background" onClick={handleBackgroundClick}>
@@ -144,7 +182,7 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
                 <h2>歡迎!</h2>
 
                 {/* 電子郵件輸入框 */}
-                {!showPasswordInput && !isRegistering && (
+                {!showVerificationInput && !showPasswordInput && !isRegistering && (
                     <>
                         <div className="email_input_box">
                             <input
@@ -168,42 +206,6 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
                             </button>
                         </div>
                         {emailError && <p className="error_message">{emailError}</p>}
-                    </>
-                )}
-
-                {/* 註冊表單 */}
-                {isRegistering && (
-                    <>
-                        <div className="name_input_box">
-                            <input
-                                type="text"
-                                placeholder="姓名"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                            />
-                        </div>
-                        <div className="phone_input_box">
-                            <input
-                                type="text"
-                                placeholder="電話號碼"
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                            />
-                        </div>
-                        {/* 密碼輸入框 */}
-                        <div className="password_input_box">
-                            <input
-                                type="password"
-                                placeholder="密碼"
-                                value={registerPassword}
-                                onChange={handleRegisterPasswordChange}
-                            />
-                        </div>
-                        <div className="submit_button_box">
-                            <button onClick={handleRegisterSubmit}>
-                                建立帳戶
-                            </button>
-                        </div>
                     </>
                 )}
 
@@ -234,10 +236,70 @@ function Login_Signin({ isOpen, onClose, origin_state, now_stage, getUser }) {
                         {passwordError && <p className="error_message">{passwordError}</p>}
                     </>
                 )}
+
+                {/* 顯示驗證碼輸入框 */}
+                {showVerificationInput && !isCodeValid && (
+                    <>
+                        <p>{email}</p>
+
+                        <div className="verification_input_box">
+                            <input
+                                type="text"
+                                placeholder="輸入驗證碼"
+                                value={userInputCode}
+                                onChange={handleVerificationCodeChange}
+                            />
+                        </div>
+                        <div className="submit_button_box">
+                            <button
+                                className="submit_button_box"
+                                onClick={verifyCode}
+                            >
+                                驗證
+                            </button>
+                        </div>
+                    </>
+                )}
+
+                {/* 註冊表單 */}
+                {isRegistering && (
+                    <>
+                        <p>{email}</p>
+
+                        <div className="name_input_box">
+                            <input
+                                type="text"
+                                placeholder="姓名"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                        </div>
+                        <div className="phone_input_box">
+                            <input
+                                type="text"
+                                placeholder="電話號碼"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                            />
+                        </div>
+                        <div className="password_input_box">
+                            <input
+                                type="password"
+                                placeholder="密碼"
+                                value={registerPassword}
+                                onChange={(e) => setRegisterPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="submit_button_box">
+                            <button onClick={handleRegisterSubmit}>
+                                建立帳戶
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     ) : null;
-
 }
 
 export default Login_Signin;

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";//轉跳頁面
+
 import "../App.css";
 const Follow_Order = () => {
     const [currentDateTime, setCurrentDateTime] = useState('');
@@ -8,12 +10,15 @@ const Follow_Order = () => {
     const [takeMeal, setTakeMeal] = useState(null);
     const [currentTime, setCurrentTime] = useState(new Date().getTime());
     const [print, setPrint] = useState("訂單準備中...");
+    const [lastNotifiedStatus, setLastNotifiedStatus] = useState("");
+    const navigate = useNavigate();
 
     const prepare = "訂單準備中...";
     const find = "尋找外送員中...";
     const goToTake = "外送員kyle正準備前往取餐";
     const comeHome = "外送員kyle正在前往你家的路上...";
     const delivered = "訂單已送達";
+    const completed = "已完成";
 
     const formatTime = (date) => {
         return date.toLocaleString('zh-TW', {
@@ -31,7 +36,12 @@ const Follow_Order = () => {
         });
     };
 
+
     useEffect(() => {
+
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
         const currentDate = new Date();
 
         setCurrentDateTime(formatTime(currentDate));
@@ -52,17 +62,32 @@ const Follow_Order = () => {
 
         return () => clearInterval(timer);
     }, []);
-
     useEffect(() => {
         if (orderPreparing && findingDealer && takeMeal && arrivalTime) {
+            let newStatus = "";
+
             if (currentTime >= orderPreparing.getTime() && currentTime < findingDealer.getTime()) {
-                setPrint(find);
+                newStatus = find;
             } else if (currentTime >= findingDealer.getTime() && currentTime < takeMeal.getTime()) {
-                setPrint(goToTake);
+                newStatus = goToTake;
             } else if (currentTime >= takeMeal.getTime() && currentTime < arrivalTime.getTime()) {
-                setPrint(comeHome);
+                newStatus = comeHome;
             } else if (currentTime >= arrivalTime.getTime()) {
-                setPrint(delivered);
+                newStatus = delivered;
+            }
+
+            if (newStatus !== lastNotifiedStatus) {
+                setPrint(newStatus);
+                if (Notification.permission === "granted") {
+                    new Notification("訂單狀態更新", { body: newStatus });
+                }
+                setLastNotifiedStatus(newStatus);
+            }
+            if (newStatus === delivered) {
+                setPrint(completed);
+                setTimeout(() => {
+                    navigate("/");
+                }, 10000);
             }
         }
     }, [currentTime, orderPreparing, findingDealer, takeMeal, arrivalTime]);

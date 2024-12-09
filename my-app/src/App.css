@@ -202,7 +202,24 @@ body {
   font-size: 16px;
   box-sizing: border-box; /* 確保內邊距包含在寬度內 */
 }
+.verification_input_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 
+/* 輸入框樣式 */
+.verification_input_box input {
+  width: 100%;  /* 輸入框的寬度 */
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box; /* 確保內邊距包含在寬度內 */
+}
 .password_input_box {
   display: flex;
   flex-direction: column;
@@ -374,4 +391,20 @@ body {
   border-radius: 15px; /* 四個角圓弧 */
   margin-left: 40px;
   margin-top: 20px;
+}
+
+/*-------------------------------------------*/
+/*home*/
+.label {
+  background: white; /* 灰色填滿 */
+  border-radius: 15px; /* 四個角圓弧 */
+  margin-left: 90px;
+}
+
+/*-------------------------------------------*/
+/*store*/
+.move_store_text{
+  /*margin-top: 90px;*/
+  margin-left: 15px;
+  font-weight: bold;
 }

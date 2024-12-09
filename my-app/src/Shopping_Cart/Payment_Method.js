@@ -106,22 +106,32 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
         setSelectedChip(value); // 設定當前選中的 Chip 值
     };
 
-    const correctOrder=()=>{
+    const correctOrder=  ()=>{
         porpRecordOrder({
             order_id:'',//不知道是什麼
-            user_id:User.user_id,
-            store_id:'',//不知道是什麼
-            delivery_id:'',//不知道是什麼
-            state:'',//不知道是什麼
-            time:'',//不知道是什麼
-            payment_id:'',//不知道是什麼
+            state:'',//以下單 等待接單
+            time:'',//2024-11-28
+            payment_method:value,
             name: name,
             phone: phone,
             address:fullAddress,
-            payment_method:value,
+            how_to_take:take,
             tips:selectedChip,
-            how_to_take:take
+            user_id:User.user_id,
+            store_id:'',//不知道是什麼
         })
+        // try {
+        //     const response = await axios.post(`http://localhost:8080/user/addUser`, newUser);
+        //     //console.log("User created successfully:", response.data);
+        //     if (response.status === 201) {
+        //         alert("註冊成功！");
+        //         setIsRegistering(false); // 注册成功后隐藏注册表单
+        //         setShowPasswordInput(true); // 显示密码框
+        //     }
+        // } catch (error) {
+        //     console.error("註冊失敗:", error);
+        //     alert("註冊失敗，請稍後再試。");
+        // }
         navigate("/follow-order");
     }
 
@@ -246,6 +256,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
                                             control={<Radio />}
                                             label="LinePay"
                                         />
+
                                     </RadioGroup>
                                 </FormControl>
                             </div>
@@ -425,6 +436,11 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
                                             value="LinePay"
                                             control={<Radio/>}
                                             label="LinePay"
+                                        />
+                                        <FormControlLabel
+                                            value="cash"
+                                            control={<Radio />}
+                                            label="現金"
                                         />
                                     </RadioGroup>
                                 </FormControl>

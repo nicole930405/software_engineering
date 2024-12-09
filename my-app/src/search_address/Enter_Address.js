@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import MyLocationTwoToneIcon from '@mui/icons-material/MyLocationTwoTone';
 import MapboxClient from '@mapbox/mapbox-sdk/services/geocoding';
 import axios from "axios";
+import {useNavigate } from "react-router-dom";//轉跳頁面
 
 const mapboxToken = 'pk.eyJ1Ijoibmljb2xlbGVpYW4iLCJhIjoiY20yMzZ0dHRxMDJtNTJwcHVhcXBvdnprNSJ9.RbW_OCCI94Cg9M8wOifaOQ';
 const geocodingClient = new MapboxClient({accessToken:mapboxToken});
@@ -67,11 +68,10 @@ function SearchAddress({getLngLat, getAddress, User}) {
 
     };
 
-    useEffect(() => {
-        getAddress(address);
-    }, [address])
+
 
     const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
+
     const get_address = address
         .split(",")
         .map((item) => item.trim())
@@ -89,12 +89,20 @@ function SearchAddress({getLngLat, getAddress, User}) {
             if (fieldNames[index] === "城市" && cur === "Taipei") {
                 acc[fieldNames[index]] = "台北市";
             }
+            if (fieldNames[index] === "城市" && cur === "臺北市") {
+                acc[fieldNames[index]] = "台北市";
+            }
             return acc;
         }, {});
 
+    useEffect(() => {
+        getAddress(address);
+    }, [address])
+
     const full_address= `${get_address.城市}${get_address.區}${get_address.路}`
-    console.log(full_address)
+    console.log(full_address);
     console.log(get_address);
+
 
     const handleSubmit = async () =>{
         try {
@@ -117,6 +125,11 @@ function SearchAddress({getLngLat, getAddress, User}) {
             handleSubmit(); // 當 full_address 改變時，執行提交
         }
     }, [full_address]);
+
+    const navigate = useNavigate();
+    const jump_to_store= ()=>{
+        navigate("/city-site-store")
+    }
 
 
     return (
@@ -155,6 +168,22 @@ function SearchAddress({getLngLat, getAddress, User}) {
                     InputLabelProps={{ shrink: true }}
                 />
             </FormControl>
+            <div>
+                <Button
+                    aria-label="search"
+                    onClick={jump_to_store}
+                    variant="contained"
+
+                    sx={{
+                        backgroundColor: "#e04c7f",
+                        '&:hover': {
+
+                        }
+                    }}
+                >
+                    尋找店家
+                </Button>
+            </div>
 
 
         </div>

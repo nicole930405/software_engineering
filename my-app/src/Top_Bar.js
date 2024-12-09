@@ -19,21 +19,8 @@ function Top_Bar({ set_User }) {
     const [LoginModalOpen, setLoginModalOpen] = useState(false); // 登入頁面
     const [FunctionList, setFunctionList] = useState(false); // 登入的使用者功能
     const [user, setUser] = useState(null); // 用來儲存登入的用戶資料
-
-    useEffect(() => {
-        // 假設用戶登入後會傳遞 User 資料，這裡從後端 API 獲取真實資料
-        if (IsLogIn && user && user.user_id) {
-            axios.get(`http://localhost:8080/user/${user.user_id}`)
-                .then(response => {
-                    console.log("Fetched user data:", response.data);
-                    setUser(response.data); // 設定用戶資料
-                    set_User(response.data); // 傳遞給父組件
-                })
-                .catch(error => {
-                    console.error("Error fetching user data:", error);
-                });
-        }
-    }, [IsLogIn, user, set_User]);
+    //console.log(user);
+    set_User(user);
 
     const handleIconClick_person = () => {
         if (!IsLogIn) {
@@ -148,6 +135,7 @@ function Top_Bar({ set_User }) {
                 getUser={setUser}
             />
             <Function_List isOpen={FunctionList} onClose={closeFunctionList} />{/* 最上面那一條 */}
+
         </div>
     );
 }
