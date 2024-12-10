@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
+import org.example.dto.StoreRequest;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -25,10 +26,12 @@ public class StoreInfoController {
 
     //用縣市和區域找店家
     @PostMapping("/byCitySite")
-    public List<StoreInfoEntity> getStoreByCitySite(@RequestBody Map<String, Object> request) {
-        String cityId = (String) request.get("city_id");
-        String siteId = (String) request.get("site_id");
+    public List<StoreInfoEntity> getStoreByCitySite(@RequestBody StoreRequest request) {
+        String cityId = request.getCity_id();
+        String siteId = request.getSite_id();
+
         return storeInfoService.getStoreByCityAndSite(cityId, siteId);
     }
+
 }
 
