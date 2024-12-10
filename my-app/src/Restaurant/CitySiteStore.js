@@ -147,7 +147,7 @@ function CitySiteStore ({getAddress})  {
             }
             try {
                 const response = await axios.post(`http://localhost:8080/city/getSite`, {
-                    cityId: "04", // 發送的 JSON 請求體
+                    cityId: "getCityId", // 發送的 JSON 請求體
                 });
                 setGetSite(response.data);
                 console.log("區:", response.data);
@@ -158,6 +158,10 @@ function CitySiteStore ({getAddress})  {
         fetchData();
 
     }, []);
+
+    useEffect(() => {
+
+    }, [getSite]);
 
     const [site, setSite] = useState(get_address.區);
 
