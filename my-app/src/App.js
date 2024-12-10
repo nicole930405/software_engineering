@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Home from "./Home"
 
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";//轉跳頁面
@@ -54,13 +54,22 @@ function App() {
     const [getStoreName, setGetStoreName] = useState("");
     //console.log(getStoreName);
 
+    const [getCitySite, setGetCitySite] = useState({
+        city:'',
+        site:'',
+    })
+
+    useEffect(() => {
+        console.log(getCitySite)
+    }, [getCitySite]);
+
 
   return (
       <Router>
         <div className="background">
             <Top_Bar set_User={setUser}/>
             <Routes>
-                <Route path="/" element={<Home setGetAddress={setGetAddress} User={user} setCity={setCity}/>}/>
+                <Route path="/" element={<Home setGetAddress={setGetAddress} User={user} setCity={setCity} setGetCitySite={setGetCitySite}/>}/>
                 <Route path="/modify-data" element={<Modify_Data User={user}/>}/>
                 <Route path="/history-order" element={<History_Order/>}/>
                 <Route path="/shopping-cart" element={<Shopping_Cart setTakeMethod={setTakeMethod}/>}/>

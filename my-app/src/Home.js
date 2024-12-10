@@ -20,7 +20,7 @@ const Image = styled('img')({
 });
 
 
-function Home({setGetAddress, User, setCity}) {
+function Home({setGetAddress, User, setCity,setGetCitySite}) {
     console.log(User);
     const navigate = useNavigate(); //轉跳頁便用
 
@@ -29,8 +29,6 @@ function Home({setGetAddress, User, setCity}) {
 
     const [address, setAddress] = useState("");
     setGetAddress(address);
-
-
 
     const handleLngLat = (data1, data2) => {
         setLng(data1);
@@ -56,7 +54,7 @@ function Home({setGetAddress, User, setCity}) {
                 <div>馬上點馬上到</div>
             </div>
             {/*未登入*/}
-            <Enter_Address getLngLat={handleLngLat} getAddress={setAddress} User={User}/>
+            <Enter_Address getLngLat={handleLngLat} getAddress={setAddress} User={User} getSeparateCitySite={setGetCitySite}/>
             <div className="move_text">
                 <div>想加入foodpanda嗎?</div>
                 <div>與foodpanda合作，讓更多人享受你的餐點跟商品吧！</div>

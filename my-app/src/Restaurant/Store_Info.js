@@ -86,21 +86,23 @@ function Store_Info ({storeId, getStoreName})  {
 
     const [value, setValue] = React.useState(2);
 
-    const [get, setGet] = useState([
-        { meal_id: 2, meal_name: '美式咖啡', meal_price: 50, meal_label: '飲品', meal_option: null },
-        { meal_id: 3, meal_name: '拿鐵', meal_price: 60, meal_label: '飲品', meal_option: null },
-        { meal_id: 4, meal_name: '卡布奇諾', meal_price: 70, meal_label: '飲品', meal_option: null },
-    ]);
+    // const [get, setGet] = useState([
+    //     { meal_id: 2, meal_name: '美式咖啡', meal_price: 50, meal_label: '飲品', meal_option: null },
+    //     { meal_id: 3, meal_name: '拿鐵', meal_price: 60, meal_label: '飲品', meal_option: null },
+    //     { meal_id: 4, meal_name: '卡布奇諾', meal_price: 70, meal_label: '飲品', meal_option: null },
+    // ]);
     const [number, setNumber] = useState(0);
     const [mealName, setMealName] = useState("");
     const [mealPrice, setMealPrice] = useState(0);
     const [showMenuDetail, setShowMenuDetail] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [mealId, setMealId] = useState(0);
 
-    const clickOrder=(meal_name, meal_price)=>{
+    const clickOrder=(meal_name, meal_price, meal_id)=>{
         setShowMenuDetail(true);
         setMealName(meal_name);
         setMealPrice(meal_price);
+        setMealId(meal_id)
         setNumber(0);
         setTotalPrice(0);
     }
@@ -117,6 +119,7 @@ function Store_Info ({storeId, getStoreName})  {
         meal_price:0,
         meal_name:'',
         meal_number:0,
+        meal_id:0,
     })
 
 
@@ -132,6 +135,7 @@ function Store_Info ({storeId, getStoreName})  {
             meal_name: mealName,
             meal_price: price,
             meal_number: nextNumber,
+            meal_id:mealId,
         }))
         if(number != 0){
             setShowNumber(true);
@@ -146,8 +150,6 @@ function Store_Info ({storeId, getStoreName})  {
             const price = totalPrice - mealPrice;
             setNumber(nextNumber);
             setTotalPrice(price);
-            // setNumber(prevNumber => prevNumber - 1);
-            // setTotalPrice(prevPrice => prevPrice - mealPrice);
             setTotalMealInfo((prevInfo)=>({
                 ...prevInfo,
                 meal_name: mealName,
@@ -163,6 +165,31 @@ function Store_Info ({storeId, getStoreName})  {
             setShowNumber(false);
         }
     }
+
+    // const addToShoppingCart =async (totalMealInfo)=>{
+    //     console.log(totalMealInfo);
+    //     try {
+    //         // 準備 payload 資料
+    //         const payload = {
+    //             mealId: 7,          // 傳送 mealIds 列表
+    //             mealOption: totalMealInfo.meal_name,   // 傳送 mealOption
+    //             quantity: totalMealInfo.meal_number,       // 傳送 quantity
+    //         };
+    //
+    //         // 發送 POST 請求
+    //         const response = await axios.post("http://localhost:8080/orderdetail/create", payload);
+    //
+    //         // 如果成功，輸出結果
+    //         console.log("Order Detail Created:", response.data);
+    //     } catch (error) {
+    //         // 如果出現錯誤，顯示錯誤訊息
+    //         console.error("Error creating order detail:", error);
+    //     }
+    // }
+
+    // const handleCreateOrderDetail = async () => {
+    //
+    // };
 
 
     return (
@@ -203,7 +230,7 @@ function Store_Info ({storeId, getStoreName})  {
                     }}/>
 
                     {getMenu.map((meal) => (
-                        <RectangleBox key={meal.meal_id} onClick={()=>clickOrder(meal.meal_name, meal.meal_price)}>
+                        <RectangleBox key={meal.meal_id} onClick={()=>clickOrder(meal.meal_name, meal.meal_price, meal.meal_id)}>
                             <div>
                                 {meal.meal_name}
                             </div>
@@ -256,7 +283,8 @@ function Store_Info ({storeId, getStoreName})  {
                                 onClick={() =>{
                                     if (number > 0) {
                                     console.log("已放入購物車"); // 這裡放入實際的功能
-                                        console.log(totalMealInfo);
+                                        //console.log(totalMealInfo);
+                                        //addToShoppingCart(totalMealInfo);
                                 }
                                 }}
                             >
