@@ -59,9 +59,20 @@ function App() {
         site:'',
     })
 
+    // useEffect(() => {
+    //     console.log(getCitySite)
+    // }, [getCitySite]);
+
+    const [getTotalMeal, setGetTotalMeal] = useState([]);
+
+    // useEffect(() => {
+    //     console.log(getTotalMeal);
+    // }, [getTotalMeal]);
+
+    const[shoppingCartInfo, setShoppingCartInfo] = useState([]);
     useEffect(() => {
-        console.log(getCitySite)
-    }, [getCitySite]);
+        console.log(shoppingCartInfo);
+    }, [shoppingCartInfo]);
 
 
   return (
@@ -72,11 +83,17 @@ function App() {
                 <Route path="/" element={<Home setGetAddress={setGetAddress} User={user} setCity={setCity} setGetCitySite={setGetCitySite}/>}/>
                 <Route path="/modify-data" element={<Modify_Data User={user}/>}/>
                 <Route path="/history-order" element={<History_Order/>}/>
-                <Route path="/shopping-cart" element={<Shopping_Cart setTakeMethod={setTakeMethod}/>}/>
-                <Route path="/payment-method" element={<Payment_Method getAddress={getAddress} User={user} takeMethod={takeMethod} porpRecordOrder={setRecordOrder}/>}/>
+                <Route path="/shopping-cart" element={<Shopping_Cart setTakeMethod={setTakeMethod} getTotalMeal={getTotalMeal} setShoppingCartInfo={setShoppingCartInfo}/>}/>
+                <Route path="/payment-method"
+                       element={<Payment_Method
+                           getAddress={getAddress}
+                           User={user}
+                           takeMethod={takeMethod}
+                           porpRecordOrder={setRecordOrder}
+                           shoppingCartInfo={shoppingCartInfo}/>}/>
                 <Route path="/follow-order" element={<Follow_order/>}/>
                 <Route path="/store" element={<Store city={city} setGetId={setGetStoreId} setGetStoreName={setGetStoreName}/>}/>
-                <Route path="/store-info" element={<Store_Info storeId={storeId} getStoreName={getStoreName}/>}/>
+                <Route path="/store-info" element={<Store_Info storeId={storeId} getStoreName={getStoreName} setGetTotalMeal={setGetTotalMeal}/>}/>
                 <Route path="/city-site-store" element={<CitySiteStore getAddress={getAddress}/>}/>
             </Routes>
         </div>

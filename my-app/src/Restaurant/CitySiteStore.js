@@ -142,7 +142,7 @@ function CitySiteStore ({getAddress})  {
     useEffect(() => {
         const fetchData = async () => {
             if (!getCityId) {
-                console.log("getCityId 為空，無法查詢店家");
+                console.log("getCityId 為空，無法查詢區");
                 return;
             }
             try {
@@ -150,7 +150,7 @@ function CitySiteStore ({getAddress})  {
                     cityId: "04", // 發送的 JSON 請求體
                 });
                 setGetSite(response.data);
-                console.log("店家列表:", response.data);
+                console.log("區:", response.data);
             } catch (error) {
                 console.error("查詢失敗:", error);
             }

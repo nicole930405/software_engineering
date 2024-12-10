@@ -1,18 +1,37 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import "../App.css"
 import { useNavigate } from "react-router-dom";//轉跳頁面
 
 import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const Shopping_Cart = ({setTakeMethod}) => {
+const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
     const navigate = useNavigate();
+    const [mealList, setMealList] = useState(getTotalMeal);
+    const [originPrice, setOriginPrice] = useState(0);
+
+    useEffect(() => {
+        const calculatedPrices = mealList.map((meal) =>
+            meal.meal_number > 0 ? meal.meal_price / meal.meal_number : 0
+        );
+        setOriginPrice(calculatedPrices);
+    }, [mealList]);
+
     const[recordButton, setRecordButton] = useState(true);//外帶
     const [checked, setChecked] = React.useState(true);
 
     const [recordChoose, setRecordChoose] = useState({
         how_to_take:''
     });
+    useEffect(() => {
+        console.log(mealList);
+
+    }, [mealList]);
+
+
 
     const chooseTake =()=>{
         setRecordButton(false);
@@ -38,6 +57,48 @@ const Shopping_Cart = ({setTakeMethod}) => {
     const changPage =()=>{
         navigate("/payment-method")
     }
+
+    const [isClick, setIsClick] = useState(false);
+
+    const clickAdd = (index) => {
+        setMealList((prevList) =>
+            prevList.map((meal, i) =>
+                i === index
+                    ? { ...meal,
+                        meal_number: meal.meal_number + 1,
+                        meal_price: meal.meal_price + meal.meal_price / meal.meal_number // 總價加單價
+                    } // 指定餐點數量加一
+                    : meal
+            )
+        );
+        setIsClick(true);
+    };
+
+    const clickSub=(index) => {
+        setMealList((prevList) =>
+            prevList.map((meal, i) =>
+                i === index
+                    ? {
+                        ...meal,
+                        meal_number: meal.meal_number > 1 ? meal.meal_number - 1 : 1,// 不再減少到 0 以下
+                        meal_price: meal.meal_price - meal.meal_price / meal.meal_number
+                    }
+                    : meal
+            )
+        );
+        setIsClick(true);
+    }
+
+    useEffect(() => {
+        console.log(mealList);
+        setShoppingCartInfo(mealList);
+    }, [mealList]);
+
+    const handleDelete = (index) => {
+        setMealList((prevList) => prevList.filter((_, i) => i !== index));
+    };
+
+
 
 
     return (
@@ -122,6 +183,46 @@ const Shopping_Cart = ({setTakeMethod}) => {
                             </Button>
                         </>
                     )}
+                </div>
+                <div>
+                    你的餐點
+                </div>
+                <div>
+                    {mealList.map((meal, index) => (
+                        <div key={index}>
+                            <div>
+                                {meal.meal_name}
+                            </div>
+                            <div>
+                                ${meal.meal_price}
+
+                                        <Button
+                                            aria-label={meal.meal_number === 1 ? "delete" : "reduce"}
+                                            onClick={() => {
+                                                meal.meal_number === 1 ? handleDelete(index) : clickSub(index)
+                                            }}
+                                            sx={{
+                                                marginLeft:'30px',
+                                            }}
+                                        >
+                                            {meal.meal_number === 1 ? (
+                                                <DeleteIcon fontSize="small" />
+                                            ) : (
+                                                <RemoveIcon fontSize="small" />
+                                            )}
+                                        </Button>
+                                        {meal.meal_number}
+                                        <Button
+                                            aria-label="increase"
+                                            onClick={() => clickAdd(index)}
+
+                                        >
+                                            <AddIcon fontSize="small"/>
+                                        </Button>
+
+                            </div>
+                        </div>
+                    ))}
                 </div>
                 <div>
                     小計

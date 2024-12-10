@@ -13,8 +13,9 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import axios from "axios";
 
-const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
+const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppingCartInfo }) => {
     const navigate = useNavigate();
+    const [orderInfo, setOrderInfo] = useState(shoppingCartInfo);
     const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
     const address = getAddress
         .split(",")

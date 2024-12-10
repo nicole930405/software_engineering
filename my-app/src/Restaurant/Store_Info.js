@@ -58,7 +58,7 @@ const ModalBox = styled("div")({
     zIndex: 1001,
 });
 
-function Store_Info ({storeId, getStoreName})  {
+function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
     console.log(storeId);
     const [getMenu, setGetMenu] = useState([]);
 
@@ -92,20 +92,13 @@ function Store_Info ({storeId, getStoreName})  {
     //     { meal_id: 4, meal_name: '卡布奇諾', meal_price: 70, meal_label: '飲品', meal_option: null },
     // ]);
     const [number, setNumber] = useState(0);
-    const [mealName, setMealName] = useState("");
-    const [mealPrice, setMealPrice] = useState(0);
+    // const [mealName, setMealName] = useState("");
+    // const [mealPrice, setMealPrice] = useState(0);
     const [showMenuDetail, setShowMenuDetail] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0);
     const [mealId, setMealId] = useState(0);
 
-    const clickOrder=(meal_name, meal_price, meal_id)=>{
-        setShowMenuDetail(true);
-        setMealName(meal_name);
-        setMealPrice(meal_price);
-        setMealId(meal_id)
-        setNumber(0);
-        setTotalPrice(0);
-    }
+
 
     const closeModal = () => {
         setShowMenuDetail(false);
@@ -115,81 +108,141 @@ function Store_Info ({storeId, getStoreName})  {
     const [showNumber, setShowNumber] = useState(false);
 
 
-    const [totalMealInfo, setTotalMealInfo] = useState({
-        meal_price:0,
-        meal_name:'',
-        meal_number:0,
-        meal_id:0,
-    })
+    const [totalMealInfo, setTotalMealInfo] = useState([]);
 
 
-    const addNumber=()=>{
-        const nextNumber = number + 1;
-        const price = totalPrice + mealPrice;
-        setNumber(nextNumber);
-        setTotalPrice(price);
-        //setNumber(prevNumber => prevNumber + 1);
-        // setTotalPrice(prevPrice => prevPrice + mealPrice);
-        setTotalMealInfo((prevInfo)=>({
-            ...prevInfo,
-            meal_name: mealName,
-            meal_price: price,
-            meal_number: nextNumber,
-            meal_id:mealId,
-        }))
-        if(number != 0){
-            setShowNumber(true);
-        }else{
-            setShowNumber(false);
-        }
-    }
 
-    const subNumber=()=>{
-        if(number != 0){
-            const nextNumber = number - 1;
-            const price = totalPrice - mealPrice;
-            setNumber(nextNumber);
-            setTotalPrice(price);
-            setTotalMealInfo((prevInfo)=>({
-                ...prevInfo,
-                meal_name: mealName,
-                meal_price: price,
-                meal_number: nextNumber,
-            }))
-            if(number == 0){
-                setShowNumber(false);
-            }else{
-                setShowNumber(true);
+
+    const addNumber=(meal_id, meal_name, meal_Price)=>{
+        console.log("meal_id:", meal_id);
+        console.log("meal_name:", meal_name);
+        console.log("meal_Price:", meal_Price);
+        setTotalMealInfo((prevInfo) => {
+            // 檢查是否已存在該 meal_id
+            const existingMeal = prevInfo.find((meal) => meal.meal_id === meal_id);
+
+            if (existingMeal) {
+                // 如果存在，更新數量與價格
+                return prevInfo.map((meal) =>
+                    meal.meal_id === meal_id
+                        ? {
+                            ...meal,
+                            meal_number: meal.meal_number + 1, // 增加數量
+                            meal_price: meal.meal_price + meal_Price, // 更新價格
+                        }
+                        : meal
+                );
+            } else {
+                // 如果不存在，新增一個新的餐點物件
+                return [
+                    ...prevInfo,
+                    {
+                        meal_id:meal_id,
+                        meal_name: meal_name,
+                        meal_price: meal_Price,
+                        meal_number: 1, // 初始數量為 1
+                    },
+                ];
             }
-        }else{
-            setShowNumber(false);
-        }
+        });
     }
 
-    // const addToShoppingCart =async (totalMealInfo)=>{
-    //     console.log(totalMealInfo);
-    //     try {
-    //         // 準備 payload 資料
-    //         const payload = {
-    //             mealId: 7,          // 傳送 mealIds 列表
-    //             mealOption: totalMealInfo.meal_name,   // 傳送 mealOption
-    //             quantity: totalMealInfo.meal_number,       // 傳送 quantity
-    //         };
-    //
-    //         // 發送 POST 請求
-    //         const response = await axios.post("http://localhost:8080/orderdetail/create", payload);
-    //
-    //         // 如果成功，輸出結果
-    //         console.log("Order Detail Created:", response.data);
-    //     } catch (error) {
-    //         // 如果出現錯誤，顯示錯誤訊息
-    //         console.error("Error creating order detail:", error);
-    //     }
-    // }
+    useEffect(() => {
+        console.log(totalMealInfo);
+    }, [totalMealInfo]);
 
-    // const handleCreateOrderDetail = async () => {
-    //
-    // };
+    const subNumber=(meal_id, meal_name, meal_Price)=>{
+        console.log("meal_id:", meal_id);
+        console.log("meal_name:", meal_name);
+        console.log("meal_Price:", meal_Price);
+        setTotalMealInfo((prevInfo) => {
+            // 檢查是否已存在該 meal_id
+            const existingMeal = prevInfo.find((meal) => meal.meal_id === meal_id);
+
+            if (existingMeal) {
+                // 如果存在，更新數量與價格
+                const updatedMeals = prevInfo.map((meal) =>
+                    meal.meal_id === meal_id
+                        ? {
+                            ...meal,
+                            meal_number: meal.meal_number > 0 ? meal.meal_number - 1 : meal.meal_number, // 如果數量大於 1，才減少
+                            meal_price: meal.meal_number > 0 ? meal.meal_price - meal_Price : meal.meal_price, // 如果數量大於 1，才減少價格
+                        }
+                        : meal
+                );
+
+                // 移除數量為 0 的餐點
+                return updatedMeals.filter((meal) => meal.meal_number > 0);
+            } else {
+                // 如果不存在
+                return prevInfo;
+            }
+        });
+    }
+
+    const getMealNumber = (meal_id) => {
+        const meal = totalMealInfo.find((item) => item.meal_id === meal_id);
+        console.log(meal);
+        return meal ? meal.meal_number : 0; // 如果找不到，返回數量 0
+    };
+
+    const [totalId, setTotalId] = useState([]);
+    const [totalOption, setTotalOption] = useState("");
+    const [quantity, setQuantity] = useState(0);
+    const [add, setAdd] = useState(false);
+
+    const addToShoppingCart = () => {
+        const ids = totalMealInfo.map((meal) => meal.meal_id);
+        setTotalId(ids);
+
+        const options = totalMealInfo.map((meal) => meal.meal_name).join(" ");
+        setTotalOption(options);
+
+        const totalQuantity = totalMealInfo.reduce((sum, meal) => sum + meal.meal_number, 0);
+        setQuantity(totalQuantity);
+
+        setGetTotalMeal(totalMealInfo);
+        setAdd((prevAdd) => !prevAdd);
+        setCountData((prev) => prev + 1);
+
+    }
+
+    const [countData, setCountData] = useState(0);
+
+    useEffect(() => {
+        const sendOrderDetails = async () => {
+            try {
+                // 準備 payload 資料
+                const payload = {
+                    mealId: totalId, // 傳送 mealIds 列表
+                    mealOption: totalOption, // 傳送 mealOption (名稱以空格隔開)
+                    quantity: quantity.toString(), // 傳送總數量
+                };
+
+                // 發送 POST 請求
+                const response = await axios.post("http://localhost:8080/orderdetail/create", payload);
+
+                // 如果成功，輸出結果
+                console.log("Order Detail Created:", response.data);
+            } catch (error) {
+                // 如果出現錯誤，顯示錯誤訊息
+                console.error("Error creating order detail:", error);
+            }
+        };
+
+        if (totalMealInfo.length > 0) {
+            sendOrderDetails();
+        }
+
+    }, [add]);
+
+    useEffect(() => {
+        console.log(countData);
+    }, [countData]);
+
+
+
+
 
 
     return (
@@ -228,72 +281,44 @@ function Store_Info ({storeId, getStoreName})  {
                     <WhatshotIcon sx={{
                         color:'#ffdd01',
                     }}/>
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: totalMealInfo.length === 0 ? "#D3D3D3" : "#e04c7f",
+                            marginLeft:"50px",
+                            marginTop:"-30px",
+                        }}
+                        disabled={totalMealInfo.length === 0}
+                        onClick={addToShoppingCart}
+                    >
+                        新增至購物車
+                    </Button>
 
                     {getMenu.map((meal) => (
-                        <RectangleBox key={meal.meal_id} onClick={()=>clickOrder(meal.meal_name, meal.meal_price, meal.meal_id)}>
+                        <RectangleBox key={meal.mealId}>
                             <div>
                                 {meal.meal_name}
                             </div>
                             <div>
                                 ${meal.meal_price}
+
                             </div>
-                            <IconButton sx={{
-                                marginLeft:'600px',
-                                marginTop:'70px'
-                            }}>
+                            <IconButton onClick={() => subNumber(meal.mealId, meal.meal_name, meal.meal_price)}>
+                                <RemoveCircleOutlineIcon/>
+                            </IconButton>
+                            {/*{number}*/}
+                            <span>{getMealNumber(meal.mealId)}</span>
+                            <IconButton onClick={() => addNumber(meal.mealId, meal.meal_name, meal.meal_price)}>
                                 <AddCircleOutlineIcon/>
                             </IconButton>
                         </RectangleBox>
                     ))}
+                    <div>
+
+                    </div>
                 </div>
             </div>
-            {showMenuDetail && (
-                <ModalOverlay onClick={closeModal}>
-                    <ModalBox onClick={(e) => e.stopPropagation()}>
-                        <IconButton sx={{
-                            marginLeft: '350px'
-                        }}>
-                            <HighlightOffIcon onClick={closeModal}/>
-                        </IconButton>
-                        <div>
-                            {mealName}
-                        </div>
-                        <div>
-                            ${mealPrice}
-                        </div>
-                        <div style={{
-                            marginTop:'180px'
-                        }}>
-                        <IconButton onClick={subNumber}>
-                            <RemoveCircleOutlineIcon/>
-                        </IconButton>
-                            {number}
-                        <IconButton onClick={addNumber}>
-                            <AddCircleOutlineIcon/>
-                        </IconButton>
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    backgroundColor: number > 0 ? '#e04c7f' : 'gray', // 根據 number 改變顏色
-                                    '&:hover': {
 
-                                    },
-                                }}
-                                disabled={number === 0} // 如果 number 等於 0 禁用按鈕
-                                onClick={() =>{
-                                    if (number > 0) {
-                                    console.log("已放入購物車"); // 這裡放入實際的功能
-                                        //console.log(totalMealInfo);
-                                        //addToShoppingCart(totalMealInfo);
-                                }
-                                }}
-                            >
-                                放入購物車
-                            </Button>
-                        </div>
-                    </ModalBox>
-                </ModalOverlay>
-            )}
         </div>
     );
 };
