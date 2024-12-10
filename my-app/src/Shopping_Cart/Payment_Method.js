@@ -13,8 +13,17 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import axios from "axios";
 
-const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
+const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppingCartInfo ,getStoreName, totalPrice }) => {
     const navigate = useNavigate();
+    const [orderInfo, setOrderInfo] = useState(shoppingCartInfo);
+    const [storeName, setStoreName] = useState(getStoreName);
+    const [total_price, setTotal_price] = useState(totalPrice);
+
+    useEffect(() => {
+        console.log(storeName);
+        console.log(orderInfo);
+        console.log(total_price);
+    }, [storeName]);
     const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
     const address = getAddress
         .split(",")
@@ -120,18 +129,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
             user_id:User.user_id,
             store_id:'',//不知道是什麼
         })
-        // try {
-        //     const response = await axios.post(`http://localhost:8080/user/addUser`, newUser);
-        //     //console.log("User created successfully:", response.data);
-        //     if (response.status === 201) {
-        //         alert("註冊成功！");
-        //         setIsRegistering(false); // 注册成功后隐藏注册表单
-        //         setShowPasswordInput(true); // 显示密码框
-        //     }
-        // } catch (error) {
-        //     console.error("註冊失敗:", error);
-        //     alert("註冊失敗，請稍後再試。");
-        // }
+
         navigate("/follow-order");
     }
 
@@ -152,20 +150,49 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
                             </div>
                         </div>
                         <div className="order">
-                            <div style={{ marginLeft: "20px" }}>
+                            <div style={{marginLeft: "20px"}}>
                                 <h2>您的訂單</h2>
+                                <div>
+                                    {storeName}
+                                </div>
+                                <div>
+                                    {orderInfo.map((order, index) => (
+                                        <div key={index}>
+                                            {order.meal_number} x {order.meal_name}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    小計 ${total_price}
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    預訂方案 外送服務費 免費
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    小額訂單費用 $ 0
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    平台費 $ 1
+
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    提袋/包材費 $ 2
+                                </div>
+                                <div>
+                                    總計 {total_price}元
+                                </div>
                             </div>
                         </div>
                         <div className="data">
-                            <div style={{ marginLeft: "20px" }}>
+                            <div style={{marginLeft: "20px"}}>
                                 <h2>
                                     個人資料
                                     {isClick ? (
-                                        <Button sx={{ color: "black" }} onClick={clickCancel}>
+                                        <Button sx={{color: "black"}} onClick={clickCancel}>
                                             取消
                                         </Button>
                                     ) : (
-                                        <Button sx={{ color: "black" }} onClick={clickModifyData}>
+                                        <Button sx={{color: "black"}} onClick={clickModifyData}>
                                             編輯
                                         </Button>
                                     )}
@@ -335,11 +362,40 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder }) => {
                         <div className="order">
                             <div style={{marginLeft: "20px"}}>
                                 <h2>您的訂單</h2>
+                                <div>
+                                    {storeName}
+                                </div>
+                                <div>
+                                    {orderInfo.map((order, index) => (
+                                        <div key={index}>
+                                            {order.meal_number} x {order.meal_name} ${order.meal_price}
+                                        </div>
+                                    ))}
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    小計 ${total_price}
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    預訂方案 外送服務費 免費
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    小額訂單費用 $ 0
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    平台費 $ 1
+
+                                </div>
+                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                    提袋/包材費 $ 2
+                                </div>
+                                <div>
+                                    總計 {total_price}元
+                                </div>
                             </div>
                         </div>
                         <div className="data">
-                            <div style={{marginLeft: "20px"}}>
-                                <h2>
+                        <div style={{marginLeft: "20px"}}>
+                            <h2>
                                     個人資料
                                     {isClick ? (
                                         <Button sx={{color: "black"}} onClick={clickCancel}>

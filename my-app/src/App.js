@@ -1,5 +1,5 @@
 import './App.css';
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Home from "./Home"
 
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";//轉跳頁面
@@ -54,20 +54,56 @@ function App() {
     const [getStoreName, setGetStoreName] = useState("");
     //console.log(getStoreName);
 
+    const [getCitySite, setGetCitySite] = useState({
+        city:'',
+        site:'',
+    })
+
+    useEffect(() => {
+        console.log(getStoreName)
+    }, [getStoreName]);
+
+    const [getTotalMeal, setGetTotalMeal] = useState([]);
+
+    // useEffect(() => {
+    //     console.log(getTotalMeal);
+    // }, [getTotalMeal]);
+
+    const[shoppingCartInfo, setShoppingCartInfo] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+    useEffect(() => {
+        console.log(totalPrice);
+    }, [totalPrice]);
+
 
   return (
       <Router>
         <div className="background">
             <Top_Bar set_User={setUser}/>
             <Routes>
-                <Route path="/" element={<Home setGetAddress={setGetAddress} User={user} setCity={setCity}/>}/>
+                <Route path="/" element={<Home setGetAddress={setGetAddress} User={user} setCity={setCity} setGetCitySite={setGetCitySite}/>}/>
                 <Route path="/modify-data" element={<Modify_Data User={user}/>}/>
                 <Route path="/history-order" element={<History_Order/>}/>
-                <Route path="/shopping-cart" element={<Shopping_Cart setTakeMethod={setTakeMethod}/>}/>
-                <Route path="/payment-method" element={<Payment_Method getAddress={getAddress} User={user} takeMethod={takeMethod} porpRecordOrder={setRecordOrder}/>}/>
+                <Route path="/shopping-cart"
+                       element={<Shopping_Cart
+                           setTakeMethod={setTakeMethod}
+                           getTotalMeal={getTotalMeal}
+                           setShoppingCartInfo={setShoppingCartInfo}
+                           setTotal_Price={setTotalPrice}
+                       />}/>
+                <Route path="/payment-method"
+                       element={<Payment_Method
+                           getAddress={getAddress}
+                           User={user}
+                           takeMethod={takeMethod}
+                           porpRecordOrder={setRecordOrder}
+                           shoppingCartInfo={shoppingCartInfo}
+                           getStoreName={getStoreName}
+                           totalPrice={totalPrice}
+                       />}/>
                 <Route path="/follow-order" element={<Follow_order/>}/>
                 <Route path="/store" element={<Store city={city} setGetId={setGetStoreId} setGetStoreName={setGetStoreName}/>}/>
-                <Route path="/store-info" element={<Store_Info storeId={storeId} getStoreName={getStoreName}/>}/>
+                <Route path="/store-info" element={<Store_Info storeId={storeId} getStoreName={getStoreName} setGetTotalMeal={setGetTotalMeal}/>}/>
                 <Route path="/city-site-store" element={<CitySiteStore getAddress={getAddress}/>}/>
             </Routes>
         </div>

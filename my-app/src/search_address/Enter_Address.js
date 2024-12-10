@@ -10,7 +10,7 @@ import {useNavigate } from "react-router-dom";//轉跳頁面
 const mapboxToken = 'pk.eyJ1Ijoibmljb2xlbGVpYW4iLCJhIjoiY20yMzZ0dHRxMDJtNTJwcHVhcXBvdnprNSJ9.RbW_OCCI94Cg9M8wOifaOQ';
 const geocodingClient = new MapboxClient({accessToken:mapboxToken});
 
-function SearchAddress({getLngLat, getAddress, User}) {
+function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
     const [address, setAddress] = useState("");  // 儲存地址
     const [lng, setLng] = useState(null); //經緯度
     const [lat, setLat] = useState(null); //經緯度
@@ -100,6 +100,24 @@ function SearchAddress({getLngLat, getAddress, User}) {
     }, [address])
 
     const full_address= `${get_address.城市}${get_address.區}${get_address.路}`
+
+    const [separate, getSeparate] = useState({
+        city:'',
+        site:'',
+    });
+
+    useEffect(() => {
+        getSeparateCitySite(prevState => ({
+            ...prevState,
+            city:get_address.城市,
+            site:get_address.區,
+        }));
+    }, [full_address]);
+
+    // useEffect(() => {
+    //     console.log(separate); // 在 state 更新後顯示最新值
+    // }, [separate]);
+
     console.log(full_address);
     console.log(get_address);
 
