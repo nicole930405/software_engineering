@@ -137,21 +137,21 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
 
     return (
         <div className="background">
-            <div className="move_text">
+            <div className="move_text2">
                 {take ? (
                     <>
                         <div className="address">
                             <div style={{ marginLeft: "20px" }}>
-                                <h2>外帶自取地址</h2>
+                                <h2 >外帶自取地址</h2>
                                 <div>
                                     <PlaceIcon />
 
                                 </div>
                             </div>
                         </div>
-                        <div className="order">
+                        <div className="order" >
                             <div style={{marginLeft: "20px"}}>
-                                <h2>您的訂單</h2>
+                                <h2 >您的訂單</h2>
                                 <div>
                                     {storeName}
                                 </div>
@@ -185,7 +185,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                         </div>
                         <div className="data">
                             <div style={{marginLeft: "20px"}}>
-                                <h2>
+                                <h2 style={{ margin: '0', padding: '0', }}>
                                     個人資料
                                     {isClick ? (
                                         <Button sx={{color: "black"}} onClick={clickCancel}>
@@ -265,7 +265,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                         </div>
                         <div className="payment">
                             <div style={{ marginLeft: "20px" }}>
-                                <h2>付款方式</h2>
+                                <h2 >付款方式</h2>
                                 <FormControl>
                                     <RadioGroup
                                         aria-labelledby="demo-controlled-radio-buttons-group"
@@ -310,8 +310,8 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                 ):(
                     <>
                         <div className="address">
-                            <div style={{marginLeft: "20px"}}>
-                                <h2>
+                            <div style={{marginLeft: "20px",fontSize: '18px'}}>
+                                <h2 >
                                     送餐地址
                                     {isModify ? (
                                         <Button sx={{color: "black"}} onClick={clickCancelAddress}>
@@ -361,7 +361,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                         </div>
                         <div className="order">
                             <div style={{marginLeft: "20px"}}>
-                                <h2>您的訂單</h2>
+                                <h2 >您的訂單</h2>
                                 <div>
                                     {storeName}
                                 </div>
@@ -372,30 +372,30 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                         </div>
                                     ))}
                                 </div>
-                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                <div style={{fontWeight: '300', color: '#808080',fontSize: '18px'}}>
                                     小計 ${total_price}
                                 </div>
-                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                <div style={{fontWeight: '300', color: '#808080',fontSize: '18px'}}>
                                     預訂方案 外送服務費 免費
                                 </div>
-                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                <div style={{fontWeight: '300', color: '#808080', fontSize: '18px'}}>
                                     小額訂單費用 $ 0
                                 </div>
-                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                <div style={{fontWeight: '300', color: '#808080',fontSize: '18px'}}>
                                     平台費 $ 1
 
                                 </div>
-                                <div style={{fontWeight: '300', color: '#808080'}}>
+                                <div style={{fontWeight: '300', color: '#808080',fontSize: '18px'}}>
                                     提袋/包材費 $ 2
                                 </div>
-                                <div>
+                                <div style={{fontSize: '18px'}}>
                                     總計 {total_price}元
                                 </div>
                             </div>
                         </div>
-                        <div className="data">
+                        <div style={{fontSize: '18px'}} className="data">
                         <div style={{marginLeft: "20px"}}>
-                            <h2>
+                            <h2 >
                                     個人資料
                                     {isClick ? (
                                         <Button sx={{color: "black"}} onClick={clickCancel}>
@@ -456,6 +456,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                                 color: "gray",
                                                 fontSize: "12px",
                                                 fontWeight: "500",
+                                                fontSize: '18px',
                                             }}
                                         >
                                             {userInfo.mail}
@@ -465,6 +466,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                                 color: "gray",
                                                 fontSize: "12px",
                                                 fontWeight: "500",
+                                                fontSize: '18px',
                                             }}
                                         >
                                             {userInfo.phone_number}
@@ -475,7 +477,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                         </div>
                         <div className="payment">
                             <div style={{marginLeft: "20px"}}>
-                                <h2>付款方式</h2>
+                                <h2 >付款方式</h2>
                                 <FormControl>
                                     <RadioGroup
                                         aria-labelledby="demo-controlled-radio-buttons-group"
@@ -503,13 +505,13 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                             </div>
                         </div>
                         <div className="invoice">
-                            <div style={{marginLeft: "20px"}}>
+                            <div style={{marginTop: '5px', marginLeft: '20px', fontSize: '18px'}}>
                                 <FormControlLabel control={<Checkbox/>} label="增加統一編號"/>
                             </div>
                         </div>
                         <div className="data">
                             <div style={{marginLeft: "20px"}}>
-                                <h2>
+                            <h2>
                                     提供外送夥伴小費
                                 </h2>
                                 <h3 style={{
@@ -518,7 +520,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                 }}>
                                     外送夥伴可獲得全額小費
                                 </h3>
-                                <Stack direction="row" spacing={1}>
+                                <Stack direction="row" spacing={1} justifyContent="center" alignItems="center">
                                     <Chip label="下次再說"
                                           variant={selectedChip === "nextTime" ? "filled" : "outlined"}
                                           onClick={() => handleChipClick("nextTime")} />
@@ -544,12 +546,13 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                 height: "40px",
                                 backgroundColor: "#e04c7f",
                                 marginLeft: "40px",
-                                marginTop: "10px",
+                                marginTop: "20px",
                             }}
                             onClick={correctOrder}
                         >
                             訂購外帶自取訂單
                         </Button>
+                        <div style={{ height: '50px' }}></div>
                     </>
                 )}
             </div>

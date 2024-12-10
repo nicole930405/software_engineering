@@ -134,6 +134,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                                         marginTop: '5px',
                                         boxShadow: 'none',
                                         marginLeft: '5px',
+                                        fontSize: '20px',
                                         '&:hover': {
                                             boxShadow: 'none',  // 懸停狀態也無陰影
                                             //backgroundColor: 'white', // 背景顏色不變
@@ -151,6 +152,8 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                                         marginTop: '5px',
                                         boxShadow: 'none',
                                         marginLeft: '5px',
+                                        fontSize: '20px',
+
                                         '&:hover': {
                                             boxShadow: 'none',  // 懸停狀態也無陰影
                                             backgroundColor: '#bebebe',
@@ -172,6 +175,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                                         marginTop: '5px',
                                         boxShadow: 'none',
                                         marginLeft: '5px',
+                                        fontSize: '20px',
                                         '&:hover': {
                                             boxShadow: 'none',  // 懸停狀態也無陰影
                                             backgroundColor: '#bebebe', // 背景顏色不變
@@ -191,6 +195,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                                         marginTop: '5px',
                                         boxShadow: 'none',
                                         marginLeft: '5px',
+                                        fontSize: '20px',
                                         '&:hover': {
                                             boxShadow: 'none',  // 懸停狀態也無陰影
                                         },
@@ -242,8 +247,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                     ))}
                 </div>
                 <div>
-                    小計
-                    {totalPrice}
+                    小計 {totalPrice} 元
                 </div>
                 <div>
                     請問你需要免洗餐具、吸管嗎?
