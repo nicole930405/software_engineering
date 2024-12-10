@@ -209,32 +209,32 @@ function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
 
     const [countData, setCountData] = useState(0);
 
-    useEffect(() => {
-        const sendOrderDetails = async () => {
-            try {
-                // 準備 payload 資料
-                const payload = {
-                    mealId: totalId, // 傳送 mealIds 列表
-                    mealOption: totalOption, // 傳送 mealOption (名稱以空格隔開)
-                    quantity: quantity.toString(), // 傳送總數量
-                };
-
-                // 發送 POST 請求
-                const response = await axios.post("http://localhost:8080/orderdetail/create", payload);
-
-                // 如果成功，輸出結果
-                console.log("Order Detail Created:", response.data);
-            } catch (error) {
-                // 如果出現錯誤，顯示錯誤訊息
-                console.error("Error creating order detail:", error);
-            }
-        };
-
-        if (totalMealInfo.length > 0) {
-            sendOrderDetails();
-        }
-
-    }, [add]);
+    // useEffect(() => {
+    //     const sendOrderDetails = async () => {
+    //         try {
+    //             // 準備 payload 資料
+    //             const payload = {
+    //                 mealId: totalId, // 傳送 mealIds 列表
+    //                 mealOption: totalOption, // 傳送 mealOption (名稱以空格隔開)
+    //                 quantity: quantity.toString(), // 傳送總數量
+    //             };
+    //
+    //             // 發送 POST 請求
+    //             const response = await axios.post("http://localhost:8080/orderdetail/create", payload);
+    //
+    //             // 如果成功，輸出結果
+    //             console.log("Order Detail Created:", response.data);
+    //         } catch (error) {
+    //             // 如果出現錯誤，顯示錯誤訊息
+    //             console.error("Error creating order detail:", error);
+    //         }
+    //     };
+    //
+    //     if (totalMealInfo.length > 0) {
+    //         sendOrderDetails();
+    //     }
+    //
+    // }, [add]);
 
     useEffect(() => {
         console.log(countData);

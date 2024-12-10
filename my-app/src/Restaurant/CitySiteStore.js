@@ -204,7 +204,12 @@ function CitySiteStore ({getAddress})  {
     // };
 
     const chooseStore =()=>{
-
+        // const filteredStores = cityStore.filter((store) =>
+        //     category.includes(store.store_type)
+        // );
+        //
+        // // 更新 cityStore 為過濾後的結果
+        // setCityStore(filteredStores);
     }
 
 

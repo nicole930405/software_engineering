@@ -8,7 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
+const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal_Price}) => {
     const navigate = useNavigate();
     const [mealList, setMealList] = useState(getTotalMeal);
     const [originPrice, setOriginPrice] = useState(0);
@@ -60,6 +60,19 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
 
     const [isClick, setIsClick] = useState(false);
 
+    const [totalPrice, setTotalPrice] = useState(0);
+    const calculateTotalPrice = (updatedList) => {
+        const total = updatedList.reduce((sum, meal) => sum + meal.meal_price, 0);
+        setTotalPrice(total);
+        setTotal_Price(total);
+    };
+
+    const calculateTotalPriceSub = (updatedList) => {
+        const total = updatedList.reduce((sum, meal) => sum - meal.meal_price, 0);
+        setTotalPrice(total);
+        setTotal_Price(total);
+    };
+
     const clickAdd = (index) => {
         setMealList((prevList) =>
             prevList.map((meal, i) =>
@@ -71,8 +84,10 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
                     : meal
             )
         );
+
         setIsClick(true);
     };
+
 
     const clickSub=(index) => {
         setMealList((prevList) =>
@@ -86,12 +101,14 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
                     : meal
             )
         );
+
         setIsClick(true);
     }
 
     useEffect(() => {
         console.log(mealList);
         setShoppingCartInfo(mealList);
+        calculateTotalPrice(mealList)
     }, [mealList]);
 
     const handleDelete = (index) => {
@@ -226,6 +243,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
                 </div>
                 <div>
                     小計
+                    {totalPrice}
                 </div>
                 <div>
                     請問你需要免洗餐具、吸管嗎?
@@ -262,9 +280,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo}) => {
                         </div>
                     </>
                 )}
-                <div>
-                    總計
-                </div>
+
                 <Button variant="contained"
                         sx={{
                             width: '300px',
