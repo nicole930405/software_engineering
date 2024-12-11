@@ -456,7 +456,6 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                                 color: "gray",
                                                 fontSize: "12px",
                                                 fontWeight: "500",
-                                                fontSize: '18px',
                                             }}
                                         >
                                             {userInfo.mail}
@@ -466,7 +465,6 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                                                 color: "gray",
                                                 fontSize: "12px",
                                                 fontWeight: "500",
-                                                fontSize: '18px',
                                             }}
                                         >
                                             {userInfo.phone_number}

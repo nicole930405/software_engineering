@@ -380,6 +380,15 @@ body {
   margin-top: 20px;
 }
 
+.frame {
+  border: 1px solid #ccc; /* 細框顏色 */
+  border-radius: 8px; /* 四個角的圓弧 */
+  padding: 10px; /* 內邊距讓內容不要緊貼邊框 */
+  margin-bottom: 10px; /* 底部間距讓每個項目分開 */
+  width: 280px;
+  margin-top: 10px;
+}
+
 /*-------------------------------------------*/
 /*follow order*/
 .take_time {
@@ -421,4 +430,13 @@ body {
   /*margin-top: 90px;*/
   margin-left: 15px;
   font-weight: bold;
+}
+/*-------------------------------------------*/
+/*store-info*/
+.move_text_info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  width: 100%;
+  margin-top: 100px;
 }

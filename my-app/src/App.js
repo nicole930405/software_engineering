@@ -101,10 +101,12 @@ function App() {
                            getStoreName={getStoreName}
                            totalPrice={totalPrice}
                        />}/>
-                <Route path="/follow-order" element={<Follow_order/>}/>
+                <Route path="/follow-order" element={<Follow_order shoppingCartInfo={shoppingCartInfo}
+                                                                   getStoreName={getStoreName}
+                                                                   totalPrice={totalPrice}/>}/>
                 <Route path="/store" element={<Store city={city} setGetId={setGetStoreId} setGetStoreName={setGetStoreName}/>}/>
                 <Route path="/store-info" element={<Store_Info storeId={storeId} getStoreName={getStoreName} setGetTotalMeal={setGetTotalMeal}/>}/>
-                <Route path="/city-site-store" element={<CitySiteStore getAddress={getAddress}/>}/>
+                <Route path="/city-site-store" element={<CitySiteStore getAddress={getAddress} setGetId={setGetStoreId} setGetStoreName={setGetStoreName}/>}/>
             </Routes>
         </div>
       </Router>

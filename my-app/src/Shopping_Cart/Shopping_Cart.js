@@ -206,6 +206,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                         </>
                     )}
                 </div>
+                <div className="frame">
                 <div>
                     你的餐點
                 </div>
@@ -248,6 +249,7 @@ const Shopping_Cart = ({setTakeMethod,getTotalMeal,setShoppingCartInfo, setTotal
                 </div>
                 <div>
                     小計 {totalPrice} 元
+                </div>
                 </div>
                 <div>
                     請問你需要免洗餐具、吸管嗎?
