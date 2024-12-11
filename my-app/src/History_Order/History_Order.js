@@ -15,7 +15,7 @@ function History_Order ({User})  {
         try {
             // 發送 POST 請求
             const response = await axios.post("http://localhost:8080/orders/getbyuser", {
-                userId:getUser.user_id
+                userId:getUser.userId
             });
             // 如果成功，輸出結果
             setHistoryInfo(response.data);

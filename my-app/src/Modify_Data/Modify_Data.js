@@ -55,9 +55,9 @@ const Modify_Data = ({User}) => {
 
     const handleSubmit = async () =>{
         try {
-            const response = await axios.put(`http://localhost:8080/user/${User.user_id}`,{
+            const response = await axios.put(`http://localhost:8080/user/${User.userId}`,{
                 user_name: newName,
-                user_id:User.user_id,
+                userId:User.userId,
                 phone_number:newPhoneNumber,
                 mail:newMail,
                 password:newPassword,
