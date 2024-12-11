@@ -172,7 +172,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
         try {
             const response = await axios.put(`http://localhost:8080/user/${currentUser.userId}`, {
                 user_name: currentUser.user_name,
-                user_id: currentUser.user_id,
+                userId: currentUser.userId,
                 phone_number: currentUser.phone_number,
                 mail: currentUser.mail,
                 password: newPassword, // 新密碼
