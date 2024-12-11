@@ -37,7 +37,7 @@ public class UserInfoService {
             user.setAddress(userDetails.getAddress());
             return userInfoRepo.save(user);
         }).orElseGet(() -> {
-            userDetails.setUser_id(userId);
+            userDetails.setUserId(userId);
             return userInfoRepo.save(userDetails);
         });
     }

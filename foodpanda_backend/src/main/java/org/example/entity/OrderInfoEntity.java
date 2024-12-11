@@ -50,9 +50,8 @@ public class OrderInfoEntity {
     @JsonIgnore
     private UserInfoEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id", nullable = false)
-    @JsonIgnore
     private StoreInfoEntity store;
 
 
@@ -70,6 +69,7 @@ public class OrderInfoEntity {
                 ", how_to_take='" + how_to_take + '\'' +
                 ", tips='" + tips + '\'' +
                 ", meal_content='" + meal_content + '\'' +
+                ", store='" + store + '\'' +
                 '}';
     }
 
