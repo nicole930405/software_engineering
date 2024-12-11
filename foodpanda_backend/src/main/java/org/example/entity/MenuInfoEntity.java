@@ -5,8 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.ToString;
 import java.util.List;
-import java.io.Serializable;
-import org.example.compositeKey.storemealKey;
+
 
 @Entity
 @Table(name = "menu_info")
@@ -16,7 +15,7 @@ public class MenuInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meal_id")
-    private int mealId;
+    private int id;
 
     @Column(name = "meal_name")
     private String meal_name;
@@ -35,8 +34,6 @@ public class MenuInfoEntity {
     @JsonIgnore
     private StoreInfoEntity store;
 
-    @ManyToMany(mappedBy = "meals") // 這裡與 OrderDetailEntity 中的關聯字段一致
-    private List<OrderDetailEntity> orderDetails;
 
 
 }

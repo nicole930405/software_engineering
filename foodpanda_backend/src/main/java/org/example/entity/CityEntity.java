@@ -7,6 +7,7 @@ import java.util.List;
 @Entity
 @Table(name = "city")
 @Data
+@ToString(exclude = {"store", "site"})
 public class CityEntity {
     @Id
     @Column(name = "city_id")

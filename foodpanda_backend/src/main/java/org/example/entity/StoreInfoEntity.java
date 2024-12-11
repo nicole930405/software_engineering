@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "store_info")
 @Data
+@ToString(onlyExplicitlyIncluded = true)
 public class StoreInfoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +36,25 @@ public class StoreInfoEntity {
     private SiteEntity site;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude // 避免循環引用
+    @ToString.Include // 避免循環引用
+    @JsonIgnore
     private List<OrderInfoEntity> orders;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude // 避免循環引用
+    @ToString.Include // 避免循環引用
+    @JsonIgnore
     private List<MenuInfoEntity> menu;
+
+    @Override
+    public String toString() {
+        return "StoreInfoEntity{" +
+                "storeId=" + storeId +
+                ", store_name='" + store_name + '\'' +
+                ", store_address='" + store_address + '\'' +
+                ", store_type='" + store_type + '\'' +
+                ", orders_count=" + (orders != null ? orders.size() : 0) +
+                ", menu_count=" + (menu != null ? menu.size() : 0) +
+                '}';
+    }
 
 }

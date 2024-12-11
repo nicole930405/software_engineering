@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user_info")
@@ -30,6 +31,7 @@ public class UserInfoEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude // 避免循環引用
+    @JsonIgnore
     private List<OrderInfoEntity> orders;
 
 }

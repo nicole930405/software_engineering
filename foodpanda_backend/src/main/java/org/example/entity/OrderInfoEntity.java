@@ -16,7 +16,7 @@ public class OrderInfoEntity {
     @Column(name = "order_id")
     private int order_id;
 
-    @Column(name = "stste")
+    @Column(name = "state")
     private String state;
 
     @Column(name = "time")
@@ -40,20 +40,40 @@ public class OrderInfoEntity {
     @Column(name = "tips")
     private String tips;
 
+    @Column(name = "meal_content")
+    private String meal_content;
+    @Column(name = "meal_id")
+    private String meal_id; // 儲存 meal_id 列表的字串形式
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private UserInfoEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id", nullable = false)
+    @JsonIgnore
     private StoreInfoEntity store;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "detail_id", nullable = false)
-    @JsonIgnore
-    private OrderDetailEntity orderdetail;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "delivery_id", nullable = false)
-//    private DeliveryInfoEntity delivery;
+
+    @Override
+    public String toString() {
+        return "OrderInfoEntity{" +
+                "order_id=" + order_id +
+                ", state='" + state + '\'' +
+                ", time='" + time + '\'' +
+                ", payment_method='" + payment_method + '\'' +
+                ", name='" + name + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", how_to_take='" + how_to_take + '\'' +
+                ", tips='" + tips + '\'' +
+                ", meal_content='" + meal_content + '\'' +
+                '}';
+    }
+
+
+
+
 }
