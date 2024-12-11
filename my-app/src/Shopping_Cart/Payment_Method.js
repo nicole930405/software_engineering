@@ -60,7 +60,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
         address:'',
         mail:'',
         phone_number:'',
-        user_id:''
+        userId:''
     })
     useEffect(() => {
         axios.get(`http://localhost:8080/user/${User.userId}`)
@@ -71,7 +71,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                     address: response.data.address,
                     mail:response.data.mail,
                     phone_number:response.data.phone_number,
-                    user_id: response.data.userId
+                    userId: response.data.userId
                 })
             })
             .catch(error => {
@@ -148,7 +148,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
             how_to_take:takeMethod.how_to_take,
             tips: selectedChip,
             meal_content:orderSummary,
-            userId:getuserInfo.user_id,
+            userId:getuserInfo.userId,
             storeId:getStoreId,
         })
 
@@ -165,7 +165,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                 how_to_take:takeMethod.how_to_take,
                 tips: selectedChip,
                 meal_content:orderSummary,
-                userId:getuserInfo.user_id,
+                userId:getuserInfo.userId,
                 storeId:getStoreId,
             });
             // 如果成功，輸出結果
