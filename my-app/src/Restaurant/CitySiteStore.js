@@ -81,35 +81,92 @@ function CitySiteStore ({getAddress, setGetId, setGetStoreName})  {
     })
 
     const [label, setLabel] = useState("");
+    const[address, setAddress] = useState(getAddress);
 
-    const get_address = getAddress
-        .split(",")
-        .map((item) => item.trim())
-        .reduce((acc, cur, index) => {
-            acc[fieldNames[index]] = cur;
-            if (fieldNames[index] === "國家" && cur === "Taiwan") {
-                acc[fieldNames[index]] = "台灣";
-            }
-            if (fieldNames[index] === "城市" && cur === "Taoyuan") {
-                acc[fieldNames[index]] = "桃園市";
-            }
-            if (fieldNames[index] === "城市" && cur === "New Taipei City") {
-                acc[fieldNames[index]] = "新北市";
-            }
-            if (fieldNames[index] === "城市" && cur === "Taipei") {
-                acc[fieldNames[index]] = "台北市";
-            }
-            if (fieldNames[index] === "城市" && cur === "臺北市") {
-                acc[fieldNames[index]] = "台北市";
-            }
-            return acc;
-        }, {});
+    // const get_address = getAddress
+    //     .split(",")
+    //     .map((item) => item.trim())
+    //     .reduce((acc, cur, index) => {
+    //         acc[fieldNames[index]] = cur;
+    //         if (fieldNames[index] === "國家" && cur === "Taiwan") {
+    //             acc[fieldNames[index]] = "台灣";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "Taoyuan") {
+    //             acc[fieldNames[index]] = "桃園市";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+    //             acc[fieldNames[index]] = "新北市";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "Taipei") {
+    //             acc[fieldNames[index]] = "台北市";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "臺北市") {
+    //             acc[fieldNames[index]] = "台北市";
+    //         }
+    //         return acc;
+    //     }, {});
+    //
+    // const full_address =  `${get_address.城市}${get_address.區}${get_address.路}`
 
-    const full_address =  `${get_address.城市}${get_address.區}${get_address.路}`
+    const get_address = (address) => {
+        const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
+        if (address.includes(",")) {
+            return address
+                .split(",")
+                .map((item) => item.trim())
+                .reduce((acc, cur, index) => {
+                    acc[fieldNames[index]] = cur;
+                    if (fieldNames[index] === "國家" && cur === "Taiwan") {
+                        acc[fieldNames[index]] = "台灣";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "Taoyuan") {
+                        acc[fieldNames[index]] = "桃園市";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+                        acc[fieldNames[index]] = "新北市";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "Taipei") {
+                        acc[fieldNames[index]] = "台北市";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "臺北市") {
+                        acc[fieldNames[index]] = "台北市";
+                    }
+                    return acc;
+                }, {});
+        } else {
+            // 無逗號的地址處理
+            const regex = /^(.*?[市縣])(.*?[區鄉鎮])(.*?[路街道巷弄號])(.*)$/;
+            const match = address.match(regex);
+            if (match) {
+                return {
+                    國家: "台灣",
+                    城市: match[1].trim(),
+                    區: match[2].trim(),
+                    路: match[3].trim(),
+                    郵遞區號: "",
+                };
+            } else {
+                return {
+                    國家: "台灣",
+                    城市: "",
+                    區: "",
+                    路: address.trim(),
+                    郵遞區號: "",
+                };
+            }
+        }
+    };
+
+// 測試
+    console.log(get_address("台灣, 桃園市, 龜山區, 文化一路"));
+    console.log(get_address("桃園市龜山區文化一路"));
+
+    const parsedAddress = get_address(address);
+    const full_address = `${parsedAddress.城市}${parsedAddress.區}${parsedAddress.路}`;
 
     console.log(full_address);
 
-    const[city, setCity] = useState(get_address.城市);
+    const[city, setCity] = useState(parsedAddress.城市);
 
     useEffect(() => {
         // 遍歷 correctCity，檢查是否有對應的錯誤城市
@@ -162,7 +219,7 @@ function CitySiteStore ({getAddress, setGetId, setGetStoreName})  {
         console.log(getSite);
     }, [getSite]);
 
-    const [site, setSite] = useState(get_address.區);
+    const [site, setSite] = useState(parsedAddress.區);
     const [selectedSiteId, setSelectedSiteId] = useState(null);
     useEffect(() => {
         // 遍歷站點列表，找到 siteName 與 site 相符的項目
@@ -287,7 +344,7 @@ function CitySiteStore ({getAddress, setGetId, setGetStoreName})  {
     }
 
 
-    console.log(get_address);
+    console.log(parsedAddress);
 
     return (
         <div className="background">
