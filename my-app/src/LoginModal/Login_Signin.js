@@ -63,6 +63,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
         try {
             const response = await axios.post("http://localhost:8080/user/byMail", { mail: email });
             if (response.data) {
+                console.log("後端返回的用戶數據：", response.data);
                 setEmailError("該電子郵件已註冊");
                 setCurrentUser(response.data); // 保存用戶信息
                 setShowPasswordInput(true);  // 顯示密碼輸入框
@@ -169,7 +170,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
         }
 
         try {
-            const response = await axios.put(`http://localhost:8080/user/${currentUser.user_id}`, {
+            const response = await axios.put(`http://localhost:8080/user/${currentUser.userId}`, {
                 user_name: currentUser.user_name,
                 user_id: currentUser.user_id,
                 phone_number: currentUser.phone_number,

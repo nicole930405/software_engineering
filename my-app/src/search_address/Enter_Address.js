@@ -185,9 +185,9 @@ function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
 
     const handleSubmit = async () =>{
         try {
-            const response = await axios.put(`http://localhost:8080/user/${User.user_id}`,{
+            const response = await axios.put(`http://localhost:8080/user/${User.userId}`,{
                 user_name: User.user_name,
-                user_id:User.user_id,
+                userId:User.userId,
                 phone_number:User.phone_number,
                 mail:User.mail,
                 password:User.password,
