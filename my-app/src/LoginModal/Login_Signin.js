@@ -22,6 +22,11 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     const [showVerificationInput, setShowVerificationInput] = useState(false); // 控制是否顯示驗證碼輸入框
     const [isCodeValid, setIsCodeValid] = useState(false); // 驗證碼是否有效
 
+    const [isForgotPassword, setIsForgotPassword] = useState(false); // 是否啟用忘記密碼流程
+    const [newPassword, setNewPassword] = useState(""); // 存儲新密碼
+    const [showNewPasswordInput, setShowNewPasswordInput] = useState(false); // 是否顯示新密碼輸入框
+    const [isResettingPassword, setIsResettingPassword] = useState(false); // 是否為重置密碼流程
+
     // 背景區域點擊時關閉登錄框
     const handleBackgroundClick = (event) => {
         if (event.target === event.currentTarget) {
@@ -137,12 +142,52 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
     // 驗證用戶輸入的驗證碼
     const verifyCode = () => {
         if (userInputCode === verificationCode.toString()) {
-            setIsCodeValid(true);  // 設置驗證碼為有效
-            alert("驗證成功！請完成註冊");
-            setIsRegistering(true);  // 進入註冊流程
+            if (isResettingPassword) {
+                setIsCodeValid(true); // 設置驗證碼有效
+                setShowVerificationInput(false); // 隱藏驗證碼輸入框
+                setShowNewPasswordInput(true); // 顯示新密碼輸入框
+                setIsRegistering(false);
+                setShowPasswordInput(false);
+            } else {
+                // 註冊流程
+                setIsCodeValid(true); // 設置驗證碼有效
+                setShowVerificationInput(false); // 隱藏驗證碼輸入框
+                setIsRegistering(true); // 進入註冊流程
+                setIsResettingPassword(false);
+                setShowNewPasswordInput(false);
+            }
         } else {
-            setIsCodeValid(false);  // 設置驗證碼為無效
-            alert("驗證碼錯誤！");
+            setIsCodeValid(false); // 設置驗證碼無效
+            alert("驗證碼錯誤，請重新輸入！");
+        }
+    };
+
+    const resetPassword = async () => {
+        if (newPassword === "") {
+            alert("新密碼不能為空！");
+            return;
+        }
+
+        try {
+            const response = await axios.put(`http://localhost:8080/user/${currentUser.user_id}`, {
+                user_name: currentUser.user_name,
+                user_id: currentUser.user_id,
+                phone_number: currentUser.phone_number,
+                mail: currentUser.mail,
+                password: newPassword, // 新密碼
+                address: currentUser.address, // 保持其他字段不變
+            });
+
+            if (response.status === 200) {
+                alert("密碼重置成功！");
+                setShowNewPasswordInput(false); // 隱藏新密碼輸入框
+                setShowPasswordInput(true); // 返回密碼輸入流程
+            } else {
+                alert("密碼重置失敗，請稍後再試！");
+            }
+        } catch (error) {
+            console.error("密碼重置失敗：", error);
+            alert("密碼重置失敗，請稍後再試！");
         }
     };
 
@@ -181,8 +226,8 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
                 </IconButton>
                 <h2>歡迎!</h2>
 
-                {/* 電子郵件輸入框 */}
-                {!showVerificationInput && !showPasswordInput && !isRegistering && (
+                {/* 顯示電子郵件輸入框 */}
+                {!showVerificationInput && !showPasswordInput && !isRegistering && !showNewPasswordInput && (
                     <>
                         <div className="email_input_box">
                             <input
@@ -212,6 +257,7 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
                 {/* 密碼輸入框 */}
                 {showPasswordInput && (
                     <>
+                        <p>{email}</p>
                         <div className="password_input_box">
                             <input
                                 type="password"
@@ -233,15 +279,53 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
                                 使用密碼登入
                             </button>
                         </div>
+                        <p></p>
+                        <div className="submit_button_box">
+                            <button
+                                onClick={() => {
+                                    setIsForgotPassword(true); // 進入忘記密碼流程
+                                    setIsResettingPassword(true); // 設置為重置密碼流程
+                                    setShowPasswordInput(false); // 隱藏密碼輸入框
+                                    setShowVerificationInput(true); // 顯示驗證碼輸入框
+                                    generateVerificationCode(); // 發送驗證碼
+                                }}
+                            >
+                                忘記密碼？
+                            </button>
+                        </div>
                         {passwordError && <p className="error_message">{passwordError}</p>}
                     </>
                 )}
-
+                {/* 顯示新密碼輸入框 */}
+                {showNewPasswordInput && (
+                    <>
+                        <p>{email}</p>
+                        <div className="password_input_box">
+                            <input
+                                type="password"
+                                placeholder="新密碼"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+                        <div className="submit_button_box">
+                            <button
+                                onClick={resetPassword}
+                                disabled={newPassword === ""}
+                                style={{
+                                    backgroundColor: newPassword === "" ? '#ccc' : '#c21760',
+                                    cursor: newPassword === "" ? 'not-allowed' : 'pointer',
+                                }}
+                            >
+                                重置密碼
+                            </button>
+                        </div>
+                    </>
+                )}
                 {/* 顯示驗證碼輸入框 */}
                 {showVerificationInput && !isCodeValid && (
                     <>
                         <p>{email}</p>
-
                         <div className="verification_input_box">
                             <input
                                 type="text"

@@ -251,6 +251,15 @@ body {
   font-size: 16px;
   box-sizing: border-box; /* 確保內邊距包含在寬度內 */
 }
+
+.forgot_password_box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
 .name_input_box {
   display: flex;
   flex-direction: column;
