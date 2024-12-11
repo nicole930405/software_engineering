@@ -35,6 +35,7 @@ public class OrderController {
     @PostMapping("/getbyuser")
     public List<OrderInfoEntity> getByUser(@RequestBody Map<String,Integer> request) {
         Integer userId = request.get("userId");
+        List<OrderInfoEntity>  order = orderService.getOrderByUserId(userId);
         return orderService.getOrderByUserId(userId);
     }
 
