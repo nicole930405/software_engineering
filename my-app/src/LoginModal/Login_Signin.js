@@ -127,10 +127,10 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
             to_email: email,  // 收件人電子郵件
         };
         emailjs.send(
-            'service_5dih0ft',  // 服務 ID
-            'template_h133v1b',  // 模板 ID
+            'service_5dih0ft',
+            'template_h133v1b',
             templateParams,
-            'l66iH9Aljyjc_k-7T'  // 用戶 ID
+            'l66iH9Aljyjc_k-7T'
         )
     };
 
@@ -191,7 +191,6 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
         }
     };
 
-    // 註冊提交，將用戶信息送至後端
     const handleRegisterSubmit = async () => {
         if (name && phoneNumber && registerPassword) {  // 檢查是否填寫所有必填欄位
             const newUser = {
@@ -331,19 +330,27 @@ function Login_Signin({isOpen, onClose, origin_state, now_stage, getUser }) {
                                 type="text"
                                 placeholder="輸入驗證碼"
                                 value={userInputCode}
-                                onChange={handleVerificationCodeChange}
+                                onChange={(e) => setUserInputCode(e.target.value)} // 更新驗證碼輸入狀態
+                                maxLength={6}
                             />
                         </div>
                         <div className="submit_button_box">
                             <button
                                 className="submit_button_box"
                                 onClick={verifyCode}
+                                disabled={!/^\d{6}$/.test(userInputCode)}
+                                style={{
+                                    backgroundColor: /^\d{6}$/.test(userInputCode) ? '#c21760' : '#ccc',
+                                    cursor: /^\d{6}$/.test(userInputCode) ? 'pointer' : 'not-allowed',
+                                }}
                             >
                                 驗證
                             </button>
                         </div>
                     </>
                 )}
+
+
 
                 {/* 註冊表單 */}
                 {isRegistering && (
