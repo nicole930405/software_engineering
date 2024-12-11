@@ -23,11 +23,6 @@ public class MenuInfoEntity {
     @Column(name = "meal_price")
     private int meal_price;
 
-    @Column(name = "meal_label")
-    private String meal_label;
-
-    @Column(name = "meal_option")
-    private String meal_option;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "storeId", nullable = false)

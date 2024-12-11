@@ -13,6 +13,8 @@ import org.example.entity.UserInfoEntity;
 import org.example.entity.StoreInfoEntity;
 import org.example.repository.UserInfoRepo;
 import org.example.repository.StoreInfoRepo;
+
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -29,6 +31,12 @@ public class OrderController {
    private StoreInfoRepo storeInfoRepo;
     @Autowired
    private UserInfoRepo userInfoRepo;
+
+    @PostMapping("/getbyuser")
+    public List<OrderInfoEntity> getByUser(@RequestBody Map<String,Integer> request) {
+        Integer userId = request.get("userId");
+        return orderService.getOrderByUserId(userId);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<?> addOrder(@RequestBody orderRequest orderRequest) {

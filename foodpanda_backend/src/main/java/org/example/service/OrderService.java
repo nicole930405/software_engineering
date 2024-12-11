@@ -27,8 +27,15 @@ public class OrderService {
     @Autowired
     private StoreInfoRepo storeInfoRepo;
 
-    @Autowired
-    private MenuInfoRepo menuInfoRepo;
+    /**
+     * 根据使用者 ID 获取所有訂單信息
+     * @param userId 使用者 ID
+     * @return 訂單列表
+     */
+    public List<OrderInfoEntity> getOrderByUserId(int userId) {
+        return orderRepo.findByUser_UserId(userId);
+    }
+
 
     public List<OrderInfoEntity> saveOrder(orderRequest orderRequest) {
         // 查找關聯的 User 和 Store
