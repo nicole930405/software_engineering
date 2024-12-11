@@ -90,12 +90,26 @@ body {
 
 }
 
-.move_text{
-  margin-top: 90px;
-  margin-left: 15px;
-  font-weight: bold;
-}
+.move_text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  margin-top: 100px;
 
+}
+.move_text2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  margin-top: 70px;
+
+}
 
 /*-------------------------------------------*/
 /*Login Modal*/
@@ -345,7 +359,7 @@ body {
   background-color: #f0f0f0; /* 灰色填滿 */
   border-radius: 15px; /* 四個角圓弧 */
   margin-left: 40px;
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .payment {
@@ -364,6 +378,15 @@ body {
   border-radius: 15px; /* 四個角圓弧 */
   margin-left: 40px;
   margin-top: 20px;
+}
+
+.frame {
+  border: 1px solid #ccc; /* 細框顏色 */
+  border-radius: 8px; /* 四個角的圓弧 */
+  padding: 10px; /* 內邊距讓內容不要緊貼邊框 */
+  margin-bottom: 10px; /* 底部間距讓每個項目分開 */
+  width: 280px;
+  margin-top: 10px;
 }
 
 /*-------------------------------------------*/
@@ -407,4 +430,13 @@ body {
   /*margin-top: 90px;*/
   margin-left: 15px;
   font-weight: bold;
+}
+/*-------------------------------------------*/
+/*store-info*/
+.move_text_info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  width: 100%;
+  margin-top: 100px;
 }

@@ -132,6 +132,7 @@ function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
                 password:User.password,
                 address:full_address
             });
+            
         } catch (error){
             console.error("更新失敗：", error);
         }

@@ -247,8 +247,7 @@ function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
 
     return (
         <div className="background">
-
-            <div className="move_text">
+            <div className="move_text_info">
                 <Image
                     src="https://encrypted-tbn0.gstatic.com/licensed-image?q=tbn:ANd9GcQ5GQ0IpA3iord8UHJgaeYNnsSKPSROPT7YPK_SEDIf11eiY4XdinS8eOeE6giVsDSOxj4X4DAWU7B1cViZQy-f_ZKujg2AmalliU0xOQ"
                     alt=""

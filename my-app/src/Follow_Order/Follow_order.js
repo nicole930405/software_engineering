@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";//轉跳頁面
 
 import "../App.css";
-const Follow_Order = () => {
+const Follow_Order = ({shoppingCartInfo, getStoreName, totalPrice}) => {
     const [currentDateTime, setCurrentDateTime] = useState('');
     const [arrivalTime, setArrivalTime] = useState(null);
     const [orderPreparing, setOrderPreparing] = useState(null);
@@ -12,6 +12,9 @@ const Follow_Order = () => {
     const [print, setPrint] = useState("訂單準備中...");
     const [lastNotifiedStatus, setLastNotifiedStatus] = useState("");
     const navigate = useNavigate();
+    const [cartInfo, setCartInfo] = useState(shoppingCartInfo);
+    const [nameInfo, setStoreName] = useState(getStoreName);
+    const [totalPri, setTotalPri] = useState(totalPrice)
 
     const prepare = "訂單準備中...";
     const find = "尋找外送員中...";
@@ -124,7 +127,23 @@ const Follow_Order = () => {
                     <div style={{
                         marginLeft:"20px"
                     }}>
-                        訂單詳情
+                        <div>
+                            訂單詳情
+                        </div>
+                        <div>
+                            店家:{nameInfo}
+                        </div>
+                        <div>
+                            餐點:
+                            {cartInfo.map((order, index) => (
+                                <div key={index}>
+                                    {order.meal_number} x {order.meal_name} ${order.meal_price}
+                                </div>
+                            ))}
+                        </div>
+                        <div>
+                            總價:{totalPri}
+                        </div>
                     </div>
                     <div style={{
                         marginLeft:"20px"

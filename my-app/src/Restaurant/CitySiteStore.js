@@ -45,7 +45,7 @@ const ModalOverlay = styled("div")({
     zIndex: 1000,
 });
 
-function CitySiteStore ({getAddress})  {
+function CitySiteStore ({getAddress, setGetId, setGetStoreName})  {
     //console.log(getAddress);
     const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
     const [isFilterOpen, setFilterOpen] = useState(false);
@@ -138,7 +138,7 @@ function CitySiteStore ({getAddress})  {
     }, [getCityId]);
     console.log(getCityId);
 
-    const [getSite, setGetSite] = useState({});
+    const [getSite, setGetSite] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
             if (!getCityId) {
@@ -146,9 +146,7 @@ function CitySiteStore ({getAddress})  {
                 return;
             }
             try {
-                const response = await axios.post(`http://localhost:8080/city/getSite`, {
-                    cityId: getCityId, // 發送的 JSON 請求體
-                });
+                const response = await axios.get(`http://localhost:8080/city/getSite?cityId=${getCityId}`);
                 setGetSite(response.data);
                 console.log("區:", response.data);
             } catch (error) {
@@ -157,13 +155,69 @@ function CitySiteStore ({getAddress})  {
         };
         fetchData();
 
-    }, []);
+    }, [getCityId]);
+
 
     useEffect(() => {
-
+        console.log(getSite);
     }, [getSite]);
 
     const [site, setSite] = useState(get_address.區);
+    const [selectedSiteId, setSelectedSiteId] = useState(null);
+    useEffect(() => {
+        // 遍歷站點列表，找到 siteName 與 site 相符的項目
+        const matchingSite = getSite.find((s) => s.siteName === site);
+
+        if (matchingSite) {
+            setSelectedSiteId(matchingSite.siteId); // 儲存 siteId
+        } else {
+            setSelectedSiteId(null); // 如果未找到則清空
+        }
+    }, [getSite, site]);
+
+    const[citySiteStore, setCitySiteStore]=useState([]);
+
+    useEffect(() => {
+        console.log(selectedSiteId);
+        const fetchData = async () => {
+            if (!getCityId) {
+                console.log("getCityId 為空，無法查詢區");
+                return;
+            }
+            try {
+                const response = await axios.post(`http://localhost:8080/store/byCitySite`,{
+                    city_id:getCityId,
+                    site_id:selectedSiteId,
+                });
+                setCitySiteStore(response.data);
+                console.log("店家列表:", response.data);
+            } catch (error) {
+                console.error("查詢失敗:", error);
+            }
+        };
+        fetchData();
+    }, [selectedSiteId]);
+
+    const [getId, setGetStoreId] = useState(0); // 用 useState 管理 getId
+    const [storeName, setStoreName] = useState("");
+    const [jump, setJump] = useState(false);
+
+    useEffect(() => {
+        console.log("更新的 StoreId:", getId); // 應該會執行這個 log
+        setGetId(getId);
+        setGetStoreName(storeName);
+        setJump(true);
+    }, [getId]);
+
+    console.log(getId);
+    console.log(storeName);
+
+    const navigate = useNavigate();
+    useEffect(() =>{
+        if(jump){
+            navigate("/store-info");
+        }
+    },[getId])
 
 
     // 切換篩選框的顯示狀態
@@ -199,24 +253,45 @@ function CitySiteStore ({getAddress})  {
         console.log(category);
     }, [category]);
 
-    // const clearAll = () => {
-    //     setCategory([]); // 清空所有選項
-    // };
 
     const chooseStore =()=>{
-        // const filteredStores = cityStore.filter((store) =>
-        //     category.includes(store.store_type)
-        // );
-        //
-        // // 更新 cityStore 為過濾後的結果
-        // setCityStore(filteredStores);
+        const filteredStores = citySiteStore.filter((store) =>
+            category.includes(store.store_type)
+        );
+
+        // 更新 cityStore 為過濾後的結果
+        setCitySiteStore(filteredStores);
+    }
+
+    const clearAll =() =>{
+        console.log(getCityId);
+        console.log(selectedSiteId);
+        setCitySiteStore({});
+        const fetchData = async () => {
+            if (!getCityId) {
+                console.log("getCityId 為空，無法查詢店家");
+                return;
+            }
+            try {
+                const response = await axios.post(`http://localhost:8080/store/byCitySite`,{
+                    city_id:getCityId,
+                    site_id:selectedSiteId,
+                });
+                setCitySiteStore(response.data);
+                console.log("店家列表:", response.data);
+            } catch (error) {
+                console.error("查詢失敗:", error);
+            }
+        };
+        fetchData();
     }
 
 
     console.log(get_address);
+
     return (
         <div className="background">
-            <div className="move_text">
+            <div className="move_text_info">
                 <div>
                     <MyLocationIcon/>
                     「{full_address}」附近店家
@@ -224,7 +299,7 @@ function CitySiteStore ({getAddress})  {
                 <div>
                     <Button
                         variant="outlined"
-                        startIcon={<DoneAllIcon />}
+                        startIcon={<DoneAllIcon/>}
                         onClick={toggleFilter} // 點擊按鈕開啟模態框
                         sx={{
                             color: "grey",
@@ -233,7 +308,7 @@ function CitySiteStore ({getAddress})  {
                                 borderColor: "darkgrey",
                             },
                             marginLeft: "800px",
-                            marginTop:'-50px'
+                            marginTop: '-50px'
                         }}
                     >
                         篩選
@@ -251,152 +326,192 @@ function CitySiteStore ({getAddress})  {
                                     right: 10,
                                 }}
                             >
-                                <HighlightOffIcon />
+                                <HighlightOffIcon/>
                             </IconButton>
                             <div>篩選條件設定...</div>
                             <Grid container spacing={3}>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "三明治/吐司" value = "三明治/吐司" onClick={(e) => onclickFillter(e.target.value)}/>三明治/吐司
+                                    <Checkbox label="三明治/吐司" value="三明治/吐司"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>三明治/吐司
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "中式" value = "中式" onClick={(e) => onclickFillter(e.target.value)}/>中式
+                                    <Checkbox label="中式" value="中式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>中式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "丼飯/蓋飯" value = "丼飯/蓋飯"  onClick={(e) => onclickFillter(e.target.value)}/>丼飯/蓋飯
+                                    <Checkbox label="丼飯/蓋飯" value="丼飯/蓋飯"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>丼飯/蓋飯
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "便當" value = "便當"  onClick={(e) => onclickFillter(e.target.value)}/>便當
+                                    <Checkbox label="便當" value="便當"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>便當
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "健康餐" value = "健康餐"  onClick={(e) => onclickFillter(e.target.value)}/>健康餐
+                                    <Checkbox label="健康餐" value="健康餐"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>健康餐
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "台式" value = "台式"  onClick={(e) => onclickFillter(e.target.value)}/>台式
+                                    <Checkbox label="台式" value="台式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>台式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "咖哩" value = "咖哩"  onClick={(e) => onclickFillter(e.target.value)}/>咖哩
+                                    <Checkbox label="咖哩" value="咖哩"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>咖哩
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "咖啡" value = "咖啡"  onClick={(e) => onclickFillter(e.target.value)}/>咖啡
+                                    <Checkbox label="咖啡" value="咖啡"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>咖啡
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "壽司" value = "壽司"  onClick={(e) => onclickFillter(e.target.value)}/>壽司
+                                    <Checkbox label="壽司" value="壽司"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>壽司
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "小吃" value = "小吃"  onClick={(e) => onclickFillter(e.target.value)}/>小吃
+                                    <Checkbox label="小吃" value="小吃"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>小吃
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "披薩" value = "披薩"  onClick={(e) => onclickFillter(e.target.value)}/>披薩
+                                    <Checkbox label="披薩" value="披薩"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>披薩
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "拉麵" value = "拉麵"  onClick={(e) => onclickFillter(e.target.value)}/>拉麵
+                                    <Checkbox label="拉麵" value="拉麵"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>拉麵
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "日式" value = "日式"  onClick={(e) => onclickFillter(e.target.value)}/>日式
+                                    <Checkbox label="日式" value="日式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>日式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "早餐" value = "早餐"  onClick={(e) => onclickFillter(e.target.value)}/>早餐
+                                    <Checkbox label="早餐" value="早餐"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>早餐
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "東南亞" value = "東南亞"  onClick={(e) => onclickFillter(e.target.value)}/>東南亞
+                                    <Checkbox label="東南亞" value="東南亞"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>東南亞
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "歐美" value = "歐美"  onClick={(e) => onclickFillter(e.target.value)}/>歐美
+                                    <Checkbox label="歐美" value="歐美"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>歐美
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "泰式" value = "泰式"  onClick={(e) => onclickFillter(e.target.value)}/>泰式
+                                    <Checkbox label="泰式" value="泰式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>泰式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "港式" value = "港式"  onClick={(e) => onclickFillter(e.target.value)}/>港式
+                                    <Checkbox label="港式" value="港式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>港式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "湯品" value = "湯品"  onClick={(e) => onclickFillter(e.target.value)}/>湯品
+                                    <Checkbox label="湯品" value="湯品"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>湯品
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "滷味" value = "滷味"  onClick={(e) => onclickFillter(e.target.value)}/>滷味
+                                    <Checkbox label="滷味" value="滷味"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>滷味
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "漢堡" value = "漢堡"  onClick={(e) => onclickFillter(e.target.value)}/>漢堡
+                                    <Checkbox label="漢堡" value="漢堡"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>漢堡
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "火鍋" value = "火鍋"  onClick={(e) => onclickFillter(e.target.value)}/>火鍋
+                                    <Checkbox label="火鍋" value="火鍋"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>火鍋
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "炒飯" value = "炒飯"  onClick={(e) => onclickFillter(e.target.value)}/>炒飯
+                                    <Checkbox label="炒飯" value="炒飯"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>炒飯
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "炸雞" value = "炸雞"  onClick={(e) => onclickFillter(e.target.value)}/>炸雞
+                                    <Checkbox label="炸雞" value="炸雞"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>炸雞
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "燒烤" value = "燒烤"  onClick={(e) => onclickFillter(e.target.value)}/>燒烤
+                                    <Checkbox label="燒烤" value="燒烤"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>燒烤
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "牛排" value = "牛排"  onClick={(e) => onclickFillter(e.target.value)}/>牛排
+                                    <Checkbox label="牛排" value="牛排"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>牛排
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "甜甜圈" value = "甜甜圈"  onClick={(e) => onclickFillter(e.target.value)}/>甜甜圈
+                                    <Checkbox label="甜甜圈" value="甜甜圈"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>甜甜圈
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "甜點" value = "甜點"  onClick={(e) => onclickFillter(e.target.value)}/>甜點
+                                    <Checkbox label="甜點" value="甜點"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>甜點
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "異國" value = "異國"  onClick={(e) => onclickFillter(e.target.value)}/>異國
+                                    <Checkbox label="異國" value="異國"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>異國
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "粥" value = "粥"  onClick={(e) => onclickFillter(e.target.value)}/>粥
+                                    <Checkbox label="粥" value="粥" onClick={(e) => onclickFillter(e.target.value)}/>粥
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "素食" value = "素食"  onClick={(e) => onclickFillter(e.target.value)}/>素食
+                                    <Checkbox label="素食" value="素食"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>素食
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "義大利麵" value = "義大利麵"  onClick={(e) => onclickFillter(e.target.value)}/>義大利麵
+                                    <Checkbox label="義大利麵" value="義大利麵"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>義大利麵
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "蛋糕" value = "蛋糕"  onClick={(e) => onclickFillter(e.target.value)}/>蛋糕
+                                    <Checkbox label="蛋糕" value="蛋糕"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>蛋糕
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "豆花" value = "豆花"  onClick={(e) => onclickFillter(e.target.value)}/>豆花
+                                    <Checkbox label="豆花" value="豆花"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>豆花
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "越式" value = "越式"  onClick={(e) => onclickFillter(e.target.value)}/>越式
+                                    <Checkbox label="越式" value="越式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>越式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "鐵板燒" value = "鐵板燒"  onClick={(e) => onclickFillter(e.target.value)}/>鐵板燒
+                                    <Checkbox label="鐵板燒" value="鐵板燒"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>鐵板燒
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "韓式" value = "韓式"  onClick={(e) => onclickFillter(e.target.value)}/>韓式
+                                    <Checkbox label="韓式" value="韓式"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>韓式
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "飲料" value = "飲料"  onClick={(e) => onclickFillter(e.target.value)}/>飲料
+                                    <Checkbox label="飲料" value="飲料"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>飲料
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "餃子" value = "餃子"  onClick={(e) => onclickFillter(e.target.value)}/>餃子
+                                    <Checkbox label="餃子" value="餃子"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>餃子
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "鹹酥雞/雞排" value = "鹹酥雞/雞排"  onClick={(e) => onclickFillter(e.target.value)}/>鹹酥雞/雞排
+                                    <Checkbox label="鹹酥雞/雞排" value="鹹酥雞/雞排"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>鹹酥雞/雞排
                                 </Grid>
                                 <Grid item xs={12} sm={6} md={4}>
-                                    <Checkbox label= "麵食" value = "麵食"  onClick={(e) => onclickFillter(e.target.value)}/>麵食
+                                    <Checkbox label="麵食" value="麵食"
+                                              onClick={(e) => onclickFillter(e.target.value)}/>麵食
                                 </Grid>
                             </Grid>
                             <div style={{
-                                marginLeft:"280px",
+                                marginLeft: "280px",
                             }}>
-                                {/*<Button*/}
-                                {/*    variant="outlined"*/}
-                                {/*    sx={{*/}
-                                {/*        borderColor: "black",*/}
-                                {/*        color: "black",*/}
-                                {/*    }}*/}
-                                {/*    //onClick={clearAll}*/}
-                                {/*>*/}
-                                {/*    清除所有*/}
-                                {/*</Button>*/}
+                                <Button
+                                    variant="outlined"
+                                    sx={{
+                                        borderColor: "black",
+                                        color: "black",
+                                    }}
+                                    onClick={clearAll}
+                                >
+                                    清除所有
+                                </Button>
                                 <Button
                                     variant="contained"
                                     sx={{
                                         backgroundColor: "#e04c7f",
-                                        marginLeft:'10px',
+                                        marginLeft: '10px',
                                     }}
                                     onClick={chooseStore}
                                 >
@@ -407,6 +522,9 @@ function CitySiteStore ({getAddress})  {
                         </ModalBox>
                     </ModalOverlay>
                 )}
+                <div className="move_store_text">
+                    <Components cityStore={citySiteStore} setGetStoreId={setGetStoreId} setStoreName={setStoreName}/>
+                </div>
             </div>
         </div>
     );
