@@ -63,7 +63,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
         user_id:''
     })
     useEffect(() => {
-        axios.get(`http://localhost:8080/user/${User.user_id}`)
+        axios.get(`http://localhost:8080/user/${User.userId}`)
             .then(response => {
                 //console.log("fetch data:", response.data);
                 setUserInfo({
@@ -71,7 +71,7 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                     address: response.data.address,
                     mail:response.data.mail,
                     phone_number:response.data.phone_number,
-                    user_id: response.data.user_id
+                    user_id: response.data.userId
                 })
             })
             .catch(error => {
