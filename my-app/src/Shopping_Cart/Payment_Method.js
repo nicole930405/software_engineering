@@ -13,11 +13,21 @@ import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import axios from "axios";
 
-const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppingCartInfo ,getStoreName, totalPrice }) => {
+const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppingCartInfo ,getStoreName, totalPrice,storeId }) => {
     const navigate = useNavigate();
+    const [getuserInfo, setGetUserInfo] = useState(User);
     const [orderInfo, setOrderInfo] = useState(shoppingCartInfo);
     const [storeName, setStoreName] = useState(getStoreName);
     const [total_price, setTotal_price] = useState(totalPrice);
+    const [getStoreId, setGetStoreId] = useState(storeId);
+    const [method, setMethod] = useState(takeMethod);
+
+    const orderSummary = orderInfo
+        .map(
+            (order) =>
+                `${order.meal_number}份 ${order.meal_name} ${order.meal_price}元`
+        )
+        .join("，"); // 用逗號分隔每個訂單的字串
 
     useEffect(() => {
         console.log(storeName);
@@ -77,12 +87,16 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
     const [phone, setPhone] = useState(User.phone_number);
     const [getNewAddress, setGetAddress] = useState(User.address);
     const [take, setTake] = useState(false); // 初始值為 false
+    const [changeTake, setChangeTake] = useState(method.how_to_take);
     const [value, setValue] = useState("credit_card");
 
     // 初始化 `take` 狀態
     useEffect(() => {
         setTake(takeMethod.how_to_take === "自取");
     }, [takeMethod]);
+    useEffect(() => {
+        console.log(takeMethod);
+    }, [changeTake]);
 
     const clickModifyData = () => setIsClick(true);
     const clickCancel = () => setIsClick(false);
@@ -114,24 +128,91 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
     const handleChipClick = (value) => {
         setSelectedChip(value); // 設定當前選中的 Chip 值
     };
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}年${String(now.getMonth() + 1).padStart(2, '0')}月${String(now.getDate()).padStart(2, '0')}日${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
 
-    const correctOrder=  ()=>{
+
+
+    useEffect(() => {
+        console.log(formattedDate); // 2024年12月12日02:14:55
+    }, [formattedDate]);
+    const correctOrder=  async()=>{
+
         porpRecordOrder({
-            order_id:'',//不知道是什麼
-            state:'',//以下單 等待接單
-            time:'',//2024-11-28
+            state: "waiting",
+            time: now,
             payment_method:value,
             name: name,
-            phone: phone,
+            phone:phone,
             address:fullAddress,
-            how_to_take:take,
-            tips:selectedChip,
-            user_id:User.user_id,
-            store_id:'',//不知道是什麼
+            how_to_take:takeMethod.how_to_take,
+            tips: selectedChip,
+            meal_content:orderSummary,
+            userId:getuserInfo.user_id,
+            storeId:getStoreId,
         })
 
-        navigate("/follow-order");
-    }
+        try {
+            // 準備 payload 資料
+            // 發送 POST 請求
+            const response = await axios.post("http://localhost:8080/orders/add", {
+                state: "waiting",
+                time: formattedDate,
+                payment_method:value,
+                name: name,
+                phone:phone,
+                address:fullAddress,
+                how_to_take:takeMethod.how_to_take,
+                tips: selectedChip,
+                meal_content:orderSummary,
+                userId:getuserInfo.user_id,
+                storeId:getStoreId,
+            });
+            // 如果成功，輸出結果
+            console.log("Order Detail Created:", response.data);
+            navigate("/follow-order");
+        } catch (error) {
+            // 如果出現錯誤，顯示錯誤訊息
+            console.error("Error creating order detail:", error);
+        }
+
+        //navigate("/follow-order");
+    };
+
+
+    //     const sendOrderDetails = async () => {
+    //         try {
+    //             // 準備 payload 資料
+    //             const payload = {
+    //                 mealId: totalId, // 傳送 mealIds 列表
+    //                 mealOption: totalOption, // 傳送 mealOption (名稱以空格隔開)
+    //                 quantity: quantity.toString(), // 傳送總數量
+    //             };
+    //
+    //             // 發送 POST 請求
+    //             const response = await axios.post("http://localhost:8080/orders/add", {
+    //                     state: "waiting",
+    //                     time: now,
+    //                     payment_method:value,
+    //                     name: name,
+    //                     phone:phone,
+    //                     address:fullAddress,
+    //                     how_to_take:changeTake,
+    //                     tips: selectedChip,
+    //                     meal_content:orderSummary,
+    //                     userId:getuserInfo.user_id,
+    //                     storeId:getStoreId,
+
+    //             });
+    //
+    //             // 如果成功，輸出結果
+    //             console.log("Order Detail Created:", response.data);
+    //         } catch (error) {
+    //             // 如果出現錯誤，顯示錯誤訊息
+    //             console.error("Error creating order detail:", error);
+    //         }
+    //     };
+
 
     //console.log(recordOrder);
 
@@ -142,10 +223,10 @@ const Payment_Method = ({ getAddress, User, takeMethod, porpRecordOrder, shoppin
                     <>
                         <div className="address">
                             <div style={{ marginLeft: "20px" }}>
-                                <h2 >外帶自取地址</h2>
+                                <h2 >外帶自取地點</h2>
                                 <div>
                                     <PlaceIcon />
-
+                                    {getStoreName}
                                 </div>
                             </div>
                         </div>

@@ -182,7 +182,8 @@ function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
 
     const getMealNumber = (meal_id) => {
         const meal = totalMealInfo.find((item) => item.meal_id === meal_id);
-        console.log(meal);
+        //console.log(meal);
+        //console.log(meal_id);
         return meal ? meal.meal_number : 0; // 如果找不到，返回數量 0
     };
 
@@ -209,32 +210,6 @@ function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
 
     const [countData, setCountData] = useState(0);
 
-    // useEffect(() => {
-    //     const sendOrderDetails = async () => {
-    //         try {
-    //             // 準備 payload 資料
-    //             const payload = {
-    //                 mealId: totalId, // 傳送 mealIds 列表
-    //                 mealOption: totalOption, // 傳送 mealOption (名稱以空格隔開)
-    //                 quantity: quantity.toString(), // 傳送總數量
-    //             };
-    //
-    //             // 發送 POST 請求
-    //             const response = await axios.post("http://localhost:8080/orderdetail/create", payload);
-    //
-    //             // 如果成功，輸出結果
-    //             console.log("Order Detail Created:", response.data);
-    //         } catch (error) {
-    //             // 如果出現錯誤，顯示錯誤訊息
-    //             console.error("Error creating order detail:", error);
-    //         }
-    //     };
-    //
-    //     if (totalMealInfo.length > 0) {
-    //         sendOrderDetails();
-    //     }
-    //
-    // }, [add]);
 
     useEffect(() => {
         console.log(countData);
@@ -294,7 +269,7 @@ function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
                     </Button>
 
                     {getMenu.map((meal) => (
-                        <RectangleBox key={meal.mealId}>
+                        <RectangleBox key={meal.id}>
                             <div>
                                 {meal.meal_name}
                             </div>
@@ -302,12 +277,12 @@ function Store_Info ({storeId, getStoreName, setGetTotalMeal})  {
                                 ${meal.meal_price}
 
                             </div>
-                            <IconButton onClick={() => subNumber(meal.mealId, meal.meal_name, meal.meal_price)}>
+                            <IconButton onClick={() => subNumber(meal.id, meal.meal_name, meal.meal_price)}>
                                 <RemoveCircleOutlineIcon/>
                             </IconButton>
                             {/*{number}*/}
-                            <span>{getMealNumber(meal.mealId)}</span>
-                            <IconButton onClick={() => addNumber(meal.mealId, meal.meal_name, meal.meal_price)}>
+                            <span>{getMealNumber(meal.id)}</span>
+                            <IconButton onClick={() => addNumber(meal.id, meal.meal_name, meal.meal_price)}>
                                 <AddCircleOutlineIcon/>
                             </IconButton>
                         </RectangleBox>

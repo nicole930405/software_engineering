@@ -49,10 +49,10 @@ const Follow_Order = ({shoppingCartInfo, getStoreName, totalPrice}) => {
 
         setCurrentDateTime(formatTime(currentDate));
 
-        const preparing = new Date(currentDate.getTime() + 0.5 * 60000);
-        const finding = new Date(currentDate.getTime() + 1 * 60000);
-        const taking = new Date(currentDate.getTime() + 1.5 * 60000);
-        const arriving = new Date(currentDate.getTime() + 30 * 60000);
+        const preparing = new Date(currentDate.getTime() + 0.16 * 60000);
+        const finding = new Date(currentDate.getTime() + 0.33 * 60000);
+        const taking = new Date(currentDate.getTime() + 0.49 * 60000);
+        const arriving = new Date(currentDate.getTime() + 1 * 60000);
 
         setOrderPreparing(preparing);
         setFindingDealer(finding);
@@ -105,10 +105,10 @@ const Follow_Order = ({shoppingCartInfo, getStoreName, totalPrice}) => {
                     <div style={{marginTop: "10px", marginLeft: "20px"}}>
                         <div>{formatDate(new Date())}{currentDateTime} - {arrivalTime ? formatTime(arrivalTime) : ""}</div>
                     </div>
-                    <div className="take_id"
-                         style={{fontSize: "12px", fontWeight: "500", marginLeft: "20px", marginTop: "10px"}}>
-                        外帶自取號碼:
-                    </div>
+                    {/*<div className="take_id"*/}
+                    {/*     style={{fontSize: "12px", fontWeight: "500", marginLeft: "20px", marginTop: "10px"}}>*/}
+                    {/*    外帶自取號碼:*/}
+                    {/*</div>*/}
                     <div style={{fontSize: "12px", fontWeight: "500", marginLeft: "20px", marginTop: "10px"}}>
                         {print}
                     </div>

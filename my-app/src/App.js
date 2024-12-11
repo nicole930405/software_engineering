@@ -26,20 +26,7 @@ function App() {
         address:''
     })
 
-    const [recordOrder, setRecordOrder] = useState({
-
-        order_id:'',//不知道是什麼
-        state:'',//以下單 等待接單
-        time:'',//2024-11-28
-        payment_method:'',
-        name: '',
-        phone: '',
-        address:'',
-        how_to_take:'',
-        tips:'',
-        user_id:'',
-        store_id:'',//不知道是什麼
-    })
+    const [recordOrder, setRecordOrder] = useState({})
     //console.log(user);ok
 
     const [getAddress, setGetAddress] = useState("");
@@ -83,7 +70,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home setGetAddress={setGetAddress} User={user} setCity={setCity} setGetCitySite={setGetCitySite}/>}/>
                 <Route path="/modify-data" element={<Modify_Data User={user}/>}/>
-                <Route path="/history-order" element={<History_Order/>}/>
+                <Route path="/history-order" element={<History_Order User={user}/>}/>
                 <Route path="/shopping-cart"
                        element={<Shopping_Cart
                            setTakeMethod={setTakeMethod}
@@ -100,6 +87,7 @@ function App() {
                            shoppingCartInfo={shoppingCartInfo}
                            getStoreName={getStoreName}
                            totalPrice={totalPrice}
+                           storeId={storeId}
                        />}/>
                 <Route path="/follow-order" element={<Follow_order shoppingCartInfo={shoppingCartInfo}
                                                                    getStoreName={getStoreName}

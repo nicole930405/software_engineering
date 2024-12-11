@@ -41,7 +41,9 @@ function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
                             const match = response.body;
                             if(match.features.length>0){
                                 //console.log(match.features[0]);
-                                setAddress(match.features[0].place_name);
+                                //setAddress(match.features[0].place_name);
+                                setAddress("文化一路, 333, 龜山區, Taoyuan, Taiwan");
+
                             }else{
                                 setAddress("未找到地址");
                             }
@@ -68,58 +70,117 @@ function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
 
     };
 
+    // useEffect(() => {
+    //     if(address != "文化一路, 333, 龜山區, Taoyuan, Taiwan"){
+    //         setAddress("文化一路, 333, 龜山區, Taoyuan, Taiwan");
+    //     }
+    // }, [address]);
 
 
-    const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
 
-    const get_address = address
-        .split(",")
-        .map((item) => item.trim())
-        .reduce((acc, cur, index) => {
-            acc[fieldNames[index]] = cur;
-            if (fieldNames[index] === "國家" && cur === "Taiwan") {
-                acc[fieldNames[index]] = "台灣";
+    //const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
+
+    // useEffect(() => {
+    //
+    // }, [address]);
+
+    const get_address = (address) => {
+        const fieldNames = ["路", "郵遞區號", "區", "城市", "國家"];
+        if (address.includes(",")) {
+            return address
+                .split(",")
+                .map((item) => item.trim())
+                .reduce((acc, cur, index) => {
+                    acc[fieldNames[index]] = cur;
+                    if (fieldNames[index] === "國家" && cur === "Taiwan") {
+                        acc[fieldNames[index]] = "台灣";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "Taoyuan") {
+                        acc[fieldNames[index]] = "桃園市";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+                        acc[fieldNames[index]] = "新北市";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "Taipei") {
+                        acc[fieldNames[index]] = "台北市";
+                    }
+                    if (fieldNames[index] === "城市" && cur === "臺北市") {
+                        acc[fieldNames[index]] = "台北市";
+                    }
+                    return acc;
+                }, {});
+        } else {
+            // 無逗號的地址處理
+            const regex = /^(.*?[市縣])(.*?[區鄉鎮])(.*?[路街道巷弄號])(.*)$/;
+            const match = address.match(regex);
+            if (match) {
+                return {
+                    國家: "台灣",
+                    城市: match[1].trim(),
+                    區: match[2].trim(),
+                    路: match[3].trim(),
+                    郵遞區號: "",
+                };
+            } else {
+                return {
+                    國家: "台灣",
+                    城市: "",
+                    區: "",
+                    路: address.trim(),
+                    郵遞區號: "",
+                };
             }
-            if (fieldNames[index] === "城市" && cur === "Taoyuan") {
-                acc[fieldNames[index]] = "桃園市";
-            }
-            if (fieldNames[index] === "城市" && cur === "New Taipei City") {
-                acc[fieldNames[index]] = "新北市";
-            }
-            if (fieldNames[index] === "城市" && cur === "Taipei") {
-                acc[fieldNames[index]] = "台北市";
-            }
-            if (fieldNames[index] === "城市" && cur === "臺北市") {
-                acc[fieldNames[index]] = "台北市";
-            }
-            return acc;
-        }, {});
+        }
+    };
+
+// 測試
+    console.log(get_address("台灣, 桃園市, 龜山區, 文化一路"));
+    console.log(get_address("桃園市龜山區文化一路"));
+
+    // const get_address = address
+    //     .split(",")
+    //     .map((item) => item.trim())
+    //     .reduce((acc, cur, index) => {
+    //         acc[fieldNames[index]] = cur;
+    //         if (fieldNames[index] === "國家" && cur === "Taiwan") {
+    //             acc[fieldNames[index]] = "台灣";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "Taoyuan") {
+    //             acc[fieldNames[index]] = "桃園市";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "New Taipei City") {
+    //             acc[fieldNames[index]] = "新北市";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "Taipei") {
+    //             acc[fieldNames[index]] = "台北市";
+    //         }
+    //         if (fieldNames[index] === "城市" && cur === "臺北市") {
+    //             acc[fieldNames[index]] = "台北市";
+    //         }
+    //         return acc;
+    //     }, {});
+
+
 
     useEffect(() => {
         getAddress(address);
     }, [address])
 
-    const full_address= `${get_address.城市}${get_address.區}${get_address.路}`
+    const parsedAddress = get_address(address);
+    const full_address = `${parsedAddress.城市}${parsedAddress.區}${parsedAddress.路}`;
 
-    const [separate, getSeparate] = useState({
-        city:'',
-        site:'',
-    });
 
     useEffect(() => {
         getSeparateCitySite(prevState => ({
             ...prevState,
-            city:get_address.城市,
-            site:get_address.區,
+            city:parsedAddress.城市,
+            site:parsedAddress.區,
         }));
     }, [full_address]);
 
-    // useEffect(() => {
-    //     console.log(separate); // 在 state 更新後顯示最新值
-    // }, [separate]);
 
     console.log(full_address);
-    console.log(get_address);
+    console.log(parsedAddress);
 
 
     const handleSubmit = async () =>{
@@ -150,6 +211,10 @@ function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
         navigate("/city-site-store")
     }
 
+    const handleAddressChange = (e) => {
+        setAddress(e.target.value);
+    }
+
 
     return (
         <div className="search_address">
@@ -161,7 +226,7 @@ function SearchAddress({getLngLat, getAddress, User, getSeparateCitySite}) {
                     id="outlined-adornment-search"
                     type="text"
                     value={address}
-                    onChange={(e) => setAddress(e.target.value)} // 更新 address 狀態
+                    onChange={handleAddressChange} // 更新 address 狀態
                     endAdornment={
                         <InputAdornment position="end">
                             <Button
